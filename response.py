@@ -1,26 +1,3 @@
-'''
-    Items to show:
-        name of ilab machine
-        room number
-        host status
-        last check time
-        next schedule active check
-        is scheduled downtime
-
-        GPU Current Temp
-        GPU Fan Speed
-        Connections
-        Load
-        Ping
-        Root Disk
-        Smart Failed
-        Smart Predicted
-        ssh
-        stats
-        vardisk
-        x2go
-'''
-
 import discord
 from discord import app_commands
 from discord.ext import commands

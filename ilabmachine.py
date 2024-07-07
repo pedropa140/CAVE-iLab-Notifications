@@ -72,4 +72,10 @@ class IlabMachine:
             "vardisk": self.vardisk,
             "x2go": self.x2go
         }
-        return json.dumps(data, default=str, indent=4)
+        json_data = json.dumps(data, default=str, indent=4)
+        
+        try:
+            with open('ilab_machines/' + self.name + '.txt', 'w') as file:
+                file.write(json_data)
+        except Exception as e:
+            print(f"An error occurred while writing to the file: {e}.txt")

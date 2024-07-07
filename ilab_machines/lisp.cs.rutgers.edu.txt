@@ -1,0 +1,21 @@
+{
+    "name": "lisp.cs.rutgers.edu",
+    "room_number": 252,
+    "host_status": "UP",
+    "last_check_time": "Jul 7 18:23:09 EDT 2024",
+    "next_schedule_active_check": "07-07-2024 18:25:07",
+    "is_scheduled_downtime": "NO",
+    "gpu_current_temp": 37,
+    "gpu_fan_speed": 32,
+    "connections": 6,
+    "load": 0.14,
+    "ping": "OK",
+    "packet_loss": 0.0,
+    "rta": 0.61,
+    "root_disk": 83.0,
+    "smart_failed": 0.0,
+    "smart_predicted": 0.0,
+    "ssh": "OK",
+    "vardisk": 16.0,
+    "x2go": 0
+}

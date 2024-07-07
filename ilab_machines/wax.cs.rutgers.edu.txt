@@ -1,0 +1,21 @@
+{
+    "name": "wax.cs.rutgers.edu",
+    "room_number": 254,
+    "host_status": "UP",
+    "last_check_time": "Jul 7 18:23:16 EDT 2024",
+    "next_schedule_active_check": "07-07-2024 18:24:50",
+    "is_scheduled_downtime": "NO",
+    "gpu_current_temp": 28,
+    "gpu_fan_speed": 36,
+    "connections": 6,
+    "load": 0.19,
+    "ping": "OK",
+    "packet_loss": 0.0,
+    "rta": 0.44,
+    "root_disk": 83.0,
+    "smart_failed": 0.0,
+    "smart_predicted": 0.0,
+    "ssh": "OK",
+    "vardisk": 16.0,
+    "x2go": 0
+}

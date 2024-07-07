@@ -8,6 +8,8 @@ import schedule
 import datetime
 
 import response
+import webscraper
+from ilabmachine import IlabMachine
 
 load_dotenv()
 
@@ -59,14 +61,18 @@ def run_discord_bot():
             print(f'Synced {synced} command(s)')
             print(f'Synced {len(synced)} command(s)')            
             print(f'{bot.user} is now running!')
-            bot.loop.create_task(roomchecks(bot))
             bot.loop.create_task(checkmachine(bot))
+            bot.loop.create_task(roomchecks(bot))
         except Exception as e:
             print(e)
         
     # on ready to do room checks every day from monday - thursday 1pm to 11pm and sunday 3pm to 11pm
     async def roomchecks(bot : commands.Bot):
         while True:
+            current_date = datetime.datetime.now()
+            day_of_week = current_date.strftime('%A')
+
+            print("Today is:", day_of_week)
             if str(datetime.datetime.now().strftime('%H:%M')) == '13:24':
                 print("ROOMCHECKS")
 
@@ -75,11 +81,30 @@ def run_discord_bot():
     # checks every 5 mins to see if a machine is down
     async def checkmachine(bot : commands.Bot):
         while True:
-            print("STATUS")
+            for room in room_dictionary:
+                for machine in room_dictionary[room]:
+                    url = f"https://report.cs.rutgers.edu/nagios4/cgi-bin/status.cgi?style=details&host={machine}"
+                    page_text = webscraper.fetch_page_content(url).strip('\n')
+                    webscraper.write_to_file(f"{machine}.txt", page_text)
+                    current_network_status_output = webscraper.current_network_status(f'{machine}.txt', machine)
+                    os.remove(f'{machine}.txt')
 
+                    url = f"https://report.cs.rutgers.edu/nagios4/cgi-bin/extinfo.cgi?type=1&host={machine}"
+                    page_text = webscraper.fetch_page_content(url).strip('\n')
+                    webscraper.write_to_file(f"{machine}.txt", page_text)
+                    extended_information_output = webscraper.extended_information(f'{machine}.txt', machine)
+                    os.remove(f'{machine}.txt')
+
+                    ilab_machine = IlabMachine(machine, room, extended_information_output[0], current_network_status_output[0],
+                                            extended_information_output[1], extended_information_output[2], current_network_status_output[1],
+                                            current_network_status_output[2], current_network_status_output[3], current_network_status_output[4],
+                                            current_network_status_output[5], current_network_status_output[6], current_network_status_output[7],
+                                            current_network_status_output[8], current_network_status_output[9], current_network_status_output[10],
+                                            current_network_status_output[11], current_network_status_output[12], current_network_status_output[13])
+
+                    ilab_machine.to_json()
             await asyncio.sleep(300)
 
-    # status [ilab machine]
     @bot.tree.command(name = "status", description = "Get a Status of an iLab Machine.")
     @app_commands.describe(machine = "Enter iLab Machine Name (e.g. If you want to check batch.cs.rutgers.edu ... Enter batch)")
     async def status(interaction : discord.Interaction, machine : str):

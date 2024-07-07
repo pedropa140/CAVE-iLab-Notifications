@@ -4,42 +4,6 @@ from ilabmachine import IlabMachine
 import os
 import datetime
 
-room_dictionary = {248: [
-    "cd.cs.rutgers.edu",
-    "cd.cs.rutgers.edu",
-    "grep.cs.rutgers.edu",
-    "kill.cs.rutgers.edu",
-    "less.cs.rutgers.edu",
-    "ls.cs.rutgers.edu",
-    "man.cs.rutgers.edu",
-    "pwd.cs.rutgers.edu",
-    "rm.cs.rutgers.edu",
-    "top.cs.rutgers.edu",
-    "vi.cs.rutgers.edu"
-], 252: [
-    "assembly.cs.rutgers.edu",
-    "basic.cs.rutgers.edu",
-    "batch.cs.rutgers.edu",
-    "cpp.cs.rutgers.edu",
-    "java.cs.rutgers.edu",
-    "lisp.cs.rutgers.edu",
-    "pascal.cs.rutgers.edu",
-    "perl.cs.rutgers.edu",
-    "prolog.cs.rutgers.edu",
-    "python.cs.rutgers.edu"
-], 254: [
-    "ice.cs.rutgers.edu",
-    "snow.cs.rutgers.edu",
-    "butter.cs.rutgers.edu",
-    "cheese.cs.rutgers.edu",
-    "candle.cs.rutgers.edu",
-    "frost.cs.rutgers.edu",
-    "popsicle.cs.rutgers.edu",
-    "plastic.cs.rutgers.edu",
-    "crayon.cs.rutgers.edu",
-    "wax.cs.rutgers.edu"
-]}
-
 def fetch_page_content(url : str):
     try:
         response = requests.get(url)
@@ -58,7 +22,6 @@ def write_to_file(filename : str, content : str):
             for line in content.splitlines():
                 if line.strip():
                     file.write(line + "\n")
-        print(f"Output written to {filename}")
     except IOError as e:
         print(f"Error writing to file: {e}")
 
@@ -69,7 +32,10 @@ def current_network_status(file_name : str, machine_name : str):
         temperature_status = lines[51].replace('OK - GPUCurrentTemp: ', '').replace(' (Threshold: High: 97 Warning: 93)', '').strip()
         gpu_fan_speed = lines[57].replace('OK - GPUFanSpeed: ', '').strip()
         connections = lines[63].replace('OK - Connections: ', '').replace(' (Threshold: High: 8000 Warning: 5000)','').strip()
-        load = lines[69].replace('OK - Load: ', '').replace(' (Threshold: High: 100 Warning: 60)', '').strip()
+        
+        end_index = lines[69].index('(')
+        end_string = lines[69][end_index:]
+        load = lines[69].replace('OK - Load: ', '').replace(end_string, '').strip().strip()
         substring = " - Packet loss = "
         ping = lines[75].replace('PING ', '').strip()
         start_index = ping.find(substring)
@@ -122,8 +88,8 @@ def current_network_status(file_name : str, machine_name : str):
             end_string = lines[123][end_index:]
             x2go = lines[123].replace(first_string, '').replace(end_string, '').strip()
 
-    return [last_checked, temperature_status, gpu_fan_speed, connections, load, ping,
-            packet_loss, rta, root_disk, smartfailed, smartpredicted, ssh, vardisk, x2go]
+    return [last_checked, int(temperature_status), int(gpu_fan_speed), int(connections), float(load), ping,
+            float(packet_loss), float(rta), float(root_disk), float(smartfailed), float(smartpredicted), ssh, float(vardisk), int(x2go)]
     
 
 def extended_information(file_name : str, machine_name : str):
@@ -162,4 +128,3 @@ if __name__ == '__main__':
                                current_network_status_output[5], current_network_status_output[6], current_network_status_output[7],
                                current_network_status_output[8], current_network_status_output[9], current_network_status_output[10],
                                current_network_status_output[11], current_network_status_output[12], current_network_status_output[13])
-    print(ilab_machine.to_json())
