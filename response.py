@@ -29,61 +29,14 @@ import json
 import requests
 from bs4 import BeautifulSoup
 
-async def status(interaction : discord.Interaction, machine : str):
+async def status(interaction : discord.Interaction, machine : str, room_dictionary : dict):
     def found(string : str):
-        room_dictionary = {248: [
-            "cd.cs.rutgers.edu",
-            "cd.cs.rutgers.edu",
-            "grep.cs.rutgers.edu",
-            "kill.cs.rutgers.edu",
-            "less.cs.rutgers.edu",
-            "ls.cs.rutgers.edu",
-            "man.cs.rutgers.edu",
-            "pwd.cs.rutgers.edu",
-            "rm.cs.rutgers.edu",
-            "top.cs.rutgers.edu",
-            "vi.cs.rutgers.edu"
-        ], 252: [
-            "assembly.cs.rutgers.edu",
-            "basic.cs.rutgers.edu",
-            "batch.cs.rutgers.edu",
-            "cpp.cs.rutgers.edu",
-            "java.cs.rutgers.edu",
-            "lisp.cs.rutgers.edu",
-            "pascal.cs.rutgers.edu",
-            "perl.cs.rutgers.edu",
-            "prolog.cs.rutgers.edu",
-            "python.cs.rutgers.edu"
-        ], 254: [
-            "ice.cs.rutgers.edu",
-            "snow.cs.rutgers.edu",
-            "butter.cs.rutgers.edu",
-            "cheese.cs.rutgers.edu",
-            "candle.cs.rutgers.edu",
-            "frost.cs.rutgers.edu",
-            "popsicle.cs.rutgers.edu",
-            "plastic.cs.rutgers.edu",
-            "crayon.cs.rutgers.edu",
-            "wax.cs.rutgers.edu"
-        ]}
         for room_number in room_dictionary:
             for machine in room_dictionary[room_number]:
                 if string + ".cs.rutgers.edu" == machine:
                     return True
         
         return False
-
-    def fetch_page_content(url):
-        try:
-            response = requests.get(url)
-            response.raise_for_status()
-            soup = BeautifulSoup(response.content, 'html.parser')
-            page_text = soup.get_text()
-            return page_text
-
-        except requests.exceptions.RequestException as e:
-            return f"Error fetching page content: {e}"
-
 
     if found(machine):
         print(f'https://report.cs.rutgers.edu/nagios4/cgi-bin/status.cgi?style=details&host={machine}.cs.rutgers.edu')
