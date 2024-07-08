@@ -328,7 +328,6 @@ def run_discord_bot():
 
                     ilab_machine.to_json()
                     if ilab_machine.host_status.lower() != 'up':
-                        # history_dictionary[machine]['status'] = 'DOWN'
                         if history_dictionary[machine]['status'].lower() != 'down':
                             result_title = f'**MACHINE MAY BE DOWN**'
                             result_description = f'**{machine[0]}**\'s status is currently down.'
