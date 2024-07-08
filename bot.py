@@ -355,7 +355,7 @@ def run_discord_bot():
                             embed.add_field(name="SSH", value= ilab_machine.ssh, inline=False)
                             embed.add_field(name="VarDisk", value= ilab_machine.vardisk, inline=False)
                             embed.add_field(name="X2GO", value= ilab_machine.x2go, inline=False)
-                            embed.set_footer(text="/roomchecks")
+                            embed.set_footer(text="/checkmachine")
                             for guild in bot.guilds:
                                 for channel in guild.channels:
                                     if channel.name.lower() == 'cave-roomchecks-bot' and str(channel.type).lower() == 'text':
