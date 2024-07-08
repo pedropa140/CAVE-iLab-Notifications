@@ -412,6 +412,6 @@ def run_discord_bot():
             embed.set_thumbnail(url='attachment://icon.png')
             embed.set_author(name="CAVE-iLab-Machine-Bot says:")
             embed.set_footer(text="/changesession")
-        await interaction.response.send_message(file=file, embed=embed, ephemeral=True)
+        await interaction.response.send_message(file=file, embed=embed, ephemeral=False)
 
     bot.run(TOKEN)
