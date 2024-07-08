@@ -19,7 +19,7 @@ async def status(interaction : discord.Interaction, machine : str, room_dictiona
             data = json.load(file)
             print(data)
             result_title = f'****{machine}****'
-            embed = discord.Embed(title=result_title, color=13632027)
+            embed = discord.Embed(title=result_title, color=8311585)
             file = discord.File('images/icon.png', filename='icon.png')
             embed.set_thumbnail(url='attachment://icon.png')
             embed.set_author(name="CAVE-iLab-Machine-Bot says:")
@@ -53,11 +53,3 @@ async def status(interaction : discord.Interaction, machine : str, room_dictiona
         embed.set_author(name="Birthday-Bot says:")
         embed.set_footer(text="/status")
         await interaction.response.send_message(file=file, embed=embed, ephemeral=True)
-
-async def changesession(interaction : discord.Interaction, user_input_session : str):
-    if user_input_session == 'regular':
-        return NotImplementedError
-    elif user_input_session == 'summer':
-        return NotADirectoryError
-    elif user_input_session == 'break':
-        return NotImplementedError

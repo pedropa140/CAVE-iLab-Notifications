@@ -54,7 +54,7 @@ def run_discord_bot():
         "crayon.cs.rutgers.edu",
         "wax.cs.rutgers.edu"
     ]}
-    session_type = 0 # 0 - regular session | 1 - summer session | 2 - no session
+    session_type = 0
     
     @bot.event
     async def on_ready():
@@ -387,7 +387,31 @@ def run_discord_bot():
         channel = str(interaction.channel)
         print(f'{username} ({mention}) said: "{user_message}" ({channel})')
 
-        await response.changesession(interaction, user_input_session)
+        completed = False
+        if user_input_session == 'regular':
+            session_type = 0
+            completed = True
+        elif user_input_session == 'summer':
+            session_type = 1
+            completed = True
+        elif user_input_session == 'break':
+            session_type = 2
+            completed = True
+
+        if completed:
+            result_title = f'**SESSION CHANGED**'
+            embed = discord.Embed(title=result_title, color=8311585)
+            file = discord.File('images/icon.png', filename='icon.png')
+            embed.set_thumbnail(url='attachment://icon.png')
+            embed.set_author(name="CAVE-iLab-Machine-Bot says:")
+            embed.set_footer(text="/changesession")
+        else:
+            result_title = f'**INVALID INPUT**'
+            embed = discord.Embed(title=result_title, color=13632027)
+            file = discord.File('images/icon.png', filename='icon.png')
+            embed.set_thumbnail(url='attachment://icon.png')
+            embed.set_author(name="CAVE-iLab-Machine-Bot says:")
+            embed.set_footer(text="/changesession")
+        await interaction.response.send_message(file=file, embed=embed, ephemeral=True)
 
     bot.run(TOKEN)
-    
