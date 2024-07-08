@@ -16,7 +16,6 @@ async def status(interaction : discord.Interaction, machine : str, room_dictiona
         return False
 
     if found(machine):
-        print(f'https://report.cs.rutgers.edu/nagios4/cgi-bin/status.cgi?style=details&host={machine}.cs.rutgers.edu')
         result_title = f'**SUCCESS**'
         result_description = f'Machine Found'
         embed = discord.Embed(title=result_title, description=result_description, color=8311585)
@@ -34,3 +33,6 @@ async def status(interaction : discord.Interaction, machine : str, room_dictiona
         embed.set_author(name="Birthday-Bot says:")
         embed.set_footer(text="/status")
         await interaction.response.send_message(file=file, embed=embed, ephemeral=True)
+
+async def changesession(interaction : discord.Interaction, user_input_session : str):
+    return NotImplementedError
