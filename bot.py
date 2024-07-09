@@ -114,7 +114,7 @@ def run_discord_bot():
                                 embed.set_footer(text="/roomchecks")
                                 for guild in bot.guilds:
                                     for channel in guild.channels:
-                                        if channel.name.lower() == 'cave-roomchecks-bot' and str(channel.type).lower() == 'text':
+                                        if channel.name.lower() == 'room-check' and str(channel.type).lower() == 'text':
                                             send_message = bot.get_guild(guild.id).get_channel(channel.id)
                                             await send_message.send(file=file, embed=embed)
                         else:
@@ -126,7 +126,7 @@ def run_discord_bot():
                             embed.set_footer(text="/roomchecks")
                             for guild in bot.guilds:
                                 for channel in guild.channels:
-                                    if channel.name.lower() == 'cave-roomchecks-bot' and str(channel.type).lower() == 'text':
+                                    if channel.name.lower() == 'room-check' and str(channel.type).lower() == 'text':
                                         send_message = bot.get_guild(guild.id).get_channel(channel.id)
                                         await send_message.send(file=file, embed=embed)
                 elif current_date == 'Friday':
@@ -168,7 +168,7 @@ def run_discord_bot():
                                 embed.set_footer(text="/roomchecks")
                                 for guild in bot.guilds:
                                     for channel in guild.channels:
-                                        if channel.name.lower() == 'cave-roomchecks-bot' and str(channel.type).lower() == 'text':
+                                        if channel.name.lower() == 'room-check' and str(channel.type).lower() == 'text':
                                             send_message = bot.get_guild(guild.id).get_channel(channel.id)
                                             await send_message.send(file=file, embed=embed)
                         else:
@@ -180,7 +180,7 @@ def run_discord_bot():
                             embed.set_footer(text="/roomchecks")
                             for guild in bot.guilds:
                                 for channel in guild.channels:
-                                    if channel.name.lower() == 'cave-roomchecks-bot' and str(channel.type).lower() == 'text':
+                                    if channel.name.lower() == 'room-check' and str(channel.type).lower() == 'text':
                                         send_message = bot.get_guild(guild.id).get_channel(channel.id)
                                         await send_message.send(file=file, embed=embed)
                 elif current_date == 'Sunday':
@@ -222,7 +222,7 @@ def run_discord_bot():
                                 embed.set_footer(text="/roomchecks")
                                 for guild in bot.guilds:
                                     for channel in guild.channels:
-                                        if channel.name.lower() == 'cave-roomchecks-bot' and str(channel.type).lower() == 'text':
+                                        if channel.name.lower() == 'room-check' and str(channel.type).lower() == 'text':
                                             send_message = bot.get_guild(guild.id).get_channel(channel.id)
                                             await send_message.send(file=file, embed=embed)
                         else:
@@ -234,7 +234,7 @@ def run_discord_bot():
                             embed.set_footer(text="/roomchecks")
                             for guild in bot.guilds:
                                 for channel in guild.channels:
-                                    if channel.name.lower() == 'cave-roomchecks-bot' and str(channel.type).lower() == 'text':
+                                    if channel.name.lower() == 'room-check' and str(channel.type).lower() == 'text':
                                         send_message = bot.get_guild(guild.id).get_channel(channel.id)
                                         await send_message.send(file=file, embed=embed)
             elif session_type == 1:
@@ -277,7 +277,7 @@ def run_discord_bot():
                                 embed.set_footer(text="/roomchecks")
                                 for guild in bot.guilds:
                                     for channel in guild.channels:
-                                        if channel.name.lower() == 'cave-roomchecks-bot' and str(channel.type).lower() == 'text':
+                                        if channel.name.lower() == 'room-check' and str(channel.type).lower() == 'text':
                                             send_message = bot.get_guild(guild.id).get_channel(channel.id)
                                             await send_message.send(file=file, embed=embed)
                         else:
@@ -289,7 +289,7 @@ def run_discord_bot():
                             embed.set_footer(text="/roomchecks")
                             for guild in bot.guilds:
                                 for channel in guild.channels:
-                                    if channel.name.lower() == 'cave-roomchecks-bot' and str(channel.type).lower() == 'text':
+                                    if channel.name.lower() == 'room-check' and str(channel.type).lower() == 'text':
                                         send_message = bot.get_guild(guild.id).get_channel(channel.id)
                                         await send_message.send(file=file, embed=embed)
             elif session_type == 2:
@@ -357,7 +357,7 @@ def run_discord_bot():
                             embed.set_footer(text="/checkmachine")
                             for guild in bot.guilds:
                                 for channel in guild.channels:
-                                    if channel.name.lower() == 'cave-roomchecks-bot' and str(channel.type).lower() == 'text':
+                                    if channel.name.lower() == 'room-check' and str(channel.type).lower() == 'text':
                                         send_message = bot.get_guild(guild.id).get_channel(channel.id)
                                         await send_message.send(file=file, embed=embed)
                             history_dictionary[machine]['status'] = 'DOWN'
