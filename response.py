@@ -15,7 +15,7 @@ async def status(interaction : discord.Interaction, machine : str, room_dictiona
         return False
 
     if found(machine):
-        with open(f'ilab_machines/{machine}.cs.rutgers.edu.txt', 'r') as file:
+        with open(f'ilab_machines/{machine}.cs.rutgers.edu.json', 'r') as file:
             data = json.load(file)
             print(data)
             result_title = f'****{machine}****'

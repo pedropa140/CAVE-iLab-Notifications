@@ -75,7 +75,7 @@ class IlabMachine:
         json_data = json.dumps(data, default=str, indent=4)
         
         try:
-            with open('ilab_machines/' + self.name + '.txt', 'w') as file:
+            with open('ilab_machines/' + self.name + '.json', 'w') as file:
                 file.write(json_data)
         except Exception as e:
             print(f"An error occurred while writing to the file: {e}.txt")

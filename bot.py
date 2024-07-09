@@ -79,7 +79,7 @@ def run_discord_bot():
                     if current_time == '13:00' or current_time == '23:00':
                         for room in room_dictionary:
                             for machine in room_dictionary[room]:
-                                with open(f'ilab_machines/{machine}.txt', 'r') as file:
+                                with open(f'ilab_machines/{machine}.json', 'r') as file:
                                     data = json.load(file)
                                     if data['host_status'].lower() != 'up':
                                         downmachines.append((machine, data))
@@ -133,7 +133,7 @@ def run_discord_bot():
                     if current_time == '13:00' or current_time == '18:00':
                         for room in room_dictionary:
                             for machine in room_dictionary[room]:
-                                with open(f'ilab_machines/{machine}.txt', 'r') as file:
+                                with open(f'ilab_machines/{machine}.json', 'r') as file:
                                     data = json.load(file)
                                     if data['host_status'].lower() != 'up':
                                         downmachines.append((machine, data))
@@ -187,7 +187,7 @@ def run_discord_bot():
                     if current_time == '15:00' or current_time == '23:00':
                         for room in room_dictionary:
                             for machine in room_dictionary[room]:
-                                with open(f'ilab_machines/{machine}.txt', 'r') as file:
+                                with open(f'ilab_machines/{machine}.json', 'r') as file:
                                     data = json.load(file)
                                     if data['host_status'].lower() != 'up':
                                         downmachines.append((machine, data))
@@ -242,7 +242,7 @@ def run_discord_bot():
                     if current_time == '13:00' or current_time == '18:00':
                         for room in room_dictionary:
                             for machine in room_dictionary[room]:
-                                with open(f'ilab_machines/{machine}.txt', 'r') as file:
+                                with open(f'ilab_machines/{machine}.json', 'r') as file:
                                     data = json.load(file)
                                     if data['host_status'].lower() != 'up':
                                         downmachines.append((machine, data))
@@ -309,15 +309,15 @@ def run_discord_bot():
                 for machine in room_dictionary[room]:
                     url = f"https://report.cs.rutgers.edu/nagios4/cgi-bin/status.cgi?style=details&host={machine}"
                     page_text = webscraper.fetch_page_content(url).strip('\n')
-                    webscraper.write_to_file(f"{machine}.txt", page_text)
-                    current_network_status_output = webscraper.current_network_status(f'{machine}.txt', machine)
-                    os.remove(f'{machine}.txt')
+                    webscraper.write_to_file(f"{machine}.json", page_text)
+                    current_network_status_output = webscraper.current_network_status(f'{machine}.json', machine)
+                    os.remove(f'{machine}.json')
 
                     url = f"https://report.cs.rutgers.edu/nagios4/cgi-bin/extinfo.cgi?type=1&host={machine}"
                     page_text = webscraper.fetch_page_content(url).strip('\n')
-                    webscraper.write_to_file(f"{machine}.txt", page_text)
-                    extended_information_output = webscraper.extended_information(f'{machine}.txt', machine)
-                    os.remove(f'{machine}.txt')
+                    webscraper.write_to_file(f"{machine}.json", page_text)
+                    extended_information_output = webscraper.extended_information(f'{machine}.json', machine)
+                    os.remove(f'{machine}.json')
 
                     ilab_machine = IlabMachine(machine, room, extended_information_output[0], current_network_status_output[0],
                                             extended_information_output[1], extended_information_output[2], current_network_status_output[1],

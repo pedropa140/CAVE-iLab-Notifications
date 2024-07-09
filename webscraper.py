@@ -104,6 +104,41 @@ def extended_information(file_name : str, machine_name : str):
 
 if __name__ == '__main__':
     def find_key_by_value(search_string : str):
+        room_dictionary = {248: [
+            "cd.cs.rutgers.edu",
+            "cd.cs.rutgers.edu",
+            "grep.cs.rutgers.edu",
+            "kill.cs.rutgers.edu",
+            "less.cs.rutgers.edu",
+            "ls.cs.rutgers.edu",
+            "man.cs.rutgers.edu",
+            "pwd.cs.rutgers.edu",
+            "rm.cs.rutgers.edu",
+            "top.cs.rutgers.edu",
+            "vi.cs.rutgers.edu"
+        ], 252: [
+            "assembly.cs.rutgers.edu",
+            "basic.cs.rutgers.edu",
+            "batch.cs.rutgers.edu",
+            "cpp.cs.rutgers.edu",
+            "java.cs.rutgers.edu",
+            "lisp.cs.rutgers.edu",
+            "pascal.cs.rutgers.edu",
+            "perl.cs.rutgers.edu",
+            "prolog.cs.rutgers.edu",
+            "python.cs.rutgers.edu"
+        ], 254: [
+            "ice.cs.rutgers.edu",
+            "snow.cs.rutgers.edu",
+            "butter.cs.rutgers.edu",
+            "cheese.cs.rutgers.edu",
+            "candle.cs.rutgers.edu",
+            "frost.cs.rutgers.edu",
+            "popsicle.cs.rutgers.edu",
+            "plastic.cs.rutgers.edu",
+            "crayon.cs.rutgers.edu",
+            "wax.cs.rutgers.edu"
+        ]}
         for key, value_list in room_dictionary.items():
             if search_string in value_list:
                 return key
