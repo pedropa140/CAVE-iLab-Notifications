@@ -7,7 +7,7 @@ import asyncio
 import schedule
 import datetime
 import json
-
+import time
 import response
 import webscraper
 from ilabmachine import IlabMachine
@@ -118,6 +118,7 @@ def run_discord_bot():
                                         if channel.name.lower() == 'room-check' and str(channel.type).lower() == 'text':
                                             send_message = bot.get_guild(guild.id).get_channel(channel.id)
                                             await send_message.send(file=file, embed=embed)
+                                            break
                         else:
                             result_title = f'**ALL MACHINES ARE UP AND RUNNING**'
                             embed = discord.Embed(title=result_title, color=8311585)
@@ -132,6 +133,7 @@ def run_discord_bot():
                                     if channel.name.lower() == 'room-check' and str(channel.type).lower() == 'text':
                                         send_message = bot.get_guild(guild.id).get_channel(channel.id)
                                         await send_message.send(file=file, embed=embed)
+                                        break
                 elif current_date == 'Friday':
                     if current_time == '13:00' or current_time == '18:00':
                         for room in room_dictionary:
@@ -174,6 +176,7 @@ def run_discord_bot():
                                         if channel.name.lower() == 'room-check' and str(channel.type).lower() == 'text':
                                             send_message = bot.get_guild(guild.id).get_channel(channel.id)
                                             await send_message.send(file=file, embed=embed)
+                                            break
                         else:
                             result_title = f'**ALL MACHINES ARE UP AND RUNNING**'
                             embed = discord.Embed(title=result_title, color=8311585)
@@ -186,6 +189,7 @@ def run_discord_bot():
                                     if channel.name.lower() == 'room-check' and str(channel.type).lower() == 'text':
                                         send_message = bot.get_guild(guild.id).get_channel(channel.id)
                                         await send_message.send(file=file, embed=embed)
+                                        break
                 elif current_date == 'Sunday':
                     if current_time == '15:00' or current_time == '23:00':
                         for room in room_dictionary:
@@ -228,6 +232,7 @@ def run_discord_bot():
                                         if channel.name.lower() == 'room-check' and str(channel.type).lower() == 'text':
                                             send_message = bot.get_guild(guild.id).get_channel(channel.id)
                                             await send_message.send(file=file, embed=embed)
+                                            break
                         else:
                             result_title = f'**ALL MACHINES ARE UP AND RUNNING**'
                             embed = discord.Embed(title=result_title, color=8311585)
@@ -240,6 +245,7 @@ def run_discord_bot():
                                     if channel.name.lower() == 'room-check' and str(channel.type).lower() == 'text':
                                         send_message = bot.get_guild(guild.id).get_channel(channel.id)
                                         await send_message.send(file=file, embed=embed)
+                                        break
             elif session_type == 1:
                 if current_date == 'Monday' or current_date == 'Tuesday' or current_date == 'Wednesday' or current_date == 'Thursday':
                     if current_time == "13:00" or current_time == '18:00':
@@ -295,10 +301,11 @@ def run_discord_bot():
                                     if channel.name.lower() == 'room-check' and str(channel.type).lower() == 'text':
                                         send_message = bot.get_guild(guild.id).get_channel(channel.id)
                                         await send_message.send(file=file, embed=embed)
+                                        break
             elif session_type == 2:
                 continue
             
-            await asyncio.sleep(60)
+            asyncio.sleep(60)
 
     async def checkmachine(bot : commands.Bot):
         history_dictionary = {}
@@ -362,13 +369,14 @@ def run_discord_bot():
                                 for channel in guild.channels:
                                     if channel.name.lower() == 'room-check' and str(channel.type).lower() == 'text':
                                         send_message = bot.get_guild(guild.id).get_channel(channel.id)
-                                        await send_message.send(file=file, embed=embed)
+                                        await send_message.send(file=file, embed=embed)                                        
+                                        break
                             history_dictionary[machine]['status'] = 'DOWN'
                         else:
                             continue
 
 
-            await asyncio.sleep(300)
+            asyncio.sleep(300)
 
     @bot.tree.command(name = "status", description = "Get a Status of an iLab Machine.")
     @app_commands.describe(machine = "Enter iLab Machine Name (e.g. If you want to check batch.cs.rutgers.edu ... Enter batch)")
