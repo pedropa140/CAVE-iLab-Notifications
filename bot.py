@@ -14,6 +14,8 @@ from ilabmachine import IlabMachine
 
 load_dotenv()
 
+session_type = 0
+
 def run_discord_bot():
     TOKEN = os.getenv('DISCORD_TOKEN')
     intents = discord.Intents.all()
@@ -54,8 +56,6 @@ def run_discord_bot():
         "crayon.cs.rutgers.edu",
         "wax.cs.rutgers.edu"
     ]}
-    session_type = 0
-    
     @bot.event
     async def on_ready():
         try:
@@ -74,6 +74,7 @@ def run_discord_bot():
             current_date = current_datetime.strftime('%A')
             current_time = current_datetime.strftime('%H:%M')
             downmachines = []
+            print(session_type)
             if session_type == 0:
                 if current_date == 'Monday' or current_date == 'Tuesday' or current_date == 'Wednesday' or current_date == 'Thursday':
                     if current_time == '13:00' or current_time == '23:00':
@@ -126,6 +127,8 @@ def run_discord_bot():
                             embed.set_footer(text="/roomchecks")
                             for guild in bot.guilds:
                                 for channel in guild.channels:
+                                    print(guild.name)
+                                    print(channel.name)
                                     if channel.name.lower() == 'room-check' and str(channel.type).lower() == 'text':
                                         send_message = bot.get_guild(guild.id).get_channel(channel.id)
                                         await send_message.send(file=file, embed=embed)
@@ -239,7 +242,7 @@ def run_discord_bot():
                                         await send_message.send(file=file, embed=embed)
             elif session_type == 1:
                 if current_date == 'Monday' or current_date == 'Tuesday' or current_date == 'Wednesday' or current_date == 'Thursday':
-                    if current_time == '13:00' or current_time == '18:00':
+                    if current_time == "13:00" or current_time == '18:00':
                         for room in room_dictionary:
                             for machine in room_dictionary[room]:
                                 with open(f'ilab_machines/{machine}.json', 'r') as file:
@@ -386,8 +389,9 @@ def run_discord_bot():
         user_message = str(interaction.command.name)
         channel = str(interaction.channel)
         print(f'{username} ({mention}) said: "{user_message}" ({channel})')
-
         completed = False
+        
+        global session_type
         if user_input_session == 'regular':
             session_type = 0
             completed = True
