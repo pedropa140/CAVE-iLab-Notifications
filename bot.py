@@ -399,7 +399,7 @@ def run_discord_bot():
             completed = True
 
         if completed:
-            result_title = f'**SESSION CHANGED**'
+            result_title = f'**SESSION CHANGED** to ***{user_input_session}***'
             embed = discord.Embed(title=result_title, color=8311585)
             file = discord.File('images/icon.png', filename='icon.png')
             embed.set_thumbnail(url='attachment://icon.png')
