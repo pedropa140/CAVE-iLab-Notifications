@@ -305,7 +305,7 @@ def run_discord_bot():
             elif session_type == 2:
                 continue
             
-            asyncio.sleep(60)
+            await asyncio.sleep(60)
 
     async def checkmachine(bot : commands.Bot):
         history_dictionary = {}
@@ -376,7 +376,7 @@ def run_discord_bot():
                             continue
 
 
-            asyncio.sleep(300)
+            await asyncio.sleep(300)
 
     @bot.tree.command(name = "status", description = "Get a Status of an iLab Machine.")
     @app_commands.describe(machine = "Enter iLab Machine Name (e.g. If you want to check batch.cs.rutgers.edu ... Enter batch)")
