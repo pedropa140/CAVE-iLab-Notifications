@@ -64,6 +64,7 @@ def run_discord_bot():
             print(f'Synced {len(synced)} command(s)')            
             print(f'{bot.user} is now running!')
             bot.loop.create_task(checkmachine(bot))
+            time.sleep(5)
             bot.loop.create_task(roomchecks(bot))
         except Exception as e:
             print(e)
@@ -374,6 +375,7 @@ def run_discord_bot():
                             history_dictionary[machine]['status'] = 'DOWN'
                         else:
                             continue
+                time.sleep(1)
 
 
             await asyncio.sleep(300)
