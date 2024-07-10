@@ -74,7 +74,7 @@ def run_discord_bot():
             current_date = current_datetime.strftime('%A')
             current_time = current_datetime.strftime('%H:%M')
             downmachines = []
-            print(session_type)
+            # print(session_type)
             if session_type == 0:
                 if current_date == 'Monday' or current_date == 'Tuesday' or current_date == 'Wednesday' or current_date == 'Thursday':
                     if current_time == '13:00' or current_time == '23:00':
