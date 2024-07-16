@@ -59,12 +59,12 @@ def run_discord_bot():
     @bot.event
     async def on_ready():
         try:
-            # synced = await bot.tree.sync()
-            # print(f'Synced {synced} command(s)')
-            # print(f'Synced {len(synced)} command(s)')            
+            synced = await bot.tree.sync()
+            print(f'Synced {synced} command(s)')
+            print(f'Synced {len(synced)} command(s)')            
             print(f'{bot.user} is now running!')
-            # bot.loop.create_task(checkmachine(bot))
-            # time.sleep(5)
+            bot.loop.create_task(checkmachine(bot))
+            time.sleep(5)
             bot.loop.create_task(roomchecks(bot))
         except Exception as e:
             print(e)
@@ -90,10 +90,10 @@ def run_discord_bot():
                         if len(downmachines) > 0:
                             for machine in downmachines:
                                 result_title = f'**Machine may be down.**'
-                                result_description = f'{current_day} {current_time} - **{machine[0]}**\'s status is currently down.'
+                                result_description = f'({current_day} {current_time}) - **{machine[0]}**\'s status is currently down.'
                                 embed = discord.Embed(title=result_title, description=result_description, color=13632027)
-                                file = discord.File('images/icon.png', filename='icon.png')
-                                embed.set_image(url='attachment://icon.png')
+                                file = discord.File(f'images/{machine[1]['room_number']}.png', filename=f'{machine[1]['room_number']}.png')
+                                embed.set_image(url=f'attachment://{machine[1]['room_number']}.png')
                                 embed.set_author(name="CAVE-iLab-Machine-Bot says:")
                                 embed.add_field(name="Machine Name", value=machine[1]['name'], inline=True)
                                 embed.add_field(name="Room Number", value=machine[1]['room_number'], inline=True)
@@ -118,29 +118,234 @@ def run_discord_bot():
                                 embed.set_footer(text="/roomchecks")
                                 for guild in bot.guilds:
                                     for channel in guild.channels:
-                                        # if (channel.name.lower() == 'room-check' or channel.name.lower() == 'cave-roomchecks-bot') and str(channel.type).lower() == 'text':
-                                        if (channel.name.lower() == 'cave-roomchecks-bot') and str(channel.type).lower() == 'text':
+                                        if (channel.name.lower() == 'room-check' or channel.name.lower() == 'cave-roomchecks-bot') and str(channel.type).lower() == 'text':
+                                        # if (channel.name.lower() == 'cave-roomchecks-bot') and str(channel.type).lower() == 'text':
                                             send_message = bot.get_guild(guild.id).get_channel(channel.id)
-                                            await send_message.send(file=file, embed=embed)
+                                            with open('images/icon.png', 'rb') as f:
+                                                file = discord.File(f, filename='icon.png')
+                                                await send_message.send(file=file, embed=embed)
                                             break
                         else:
-                            result_title = f'**ALL MACHINES ARE UP AND RUNNING**'
-                            embed = discord.Embed(title=result_title, color=8311585)
+                            result_title = f'**Machines up and running.**'
+                            result_description = f'({current_day} {current_time}) - All Machines Green'
+                            embed = discord.Embed(title=result_title, description=result_description, color=8311585)
                             file = discord.File('images/icon.png', filename='icon.png')
-                            embed.set_image(url='attachment://icon.png')
+                            embed.set_thumbnail(url='attachment://icon.png')
                             embed.set_author(name="CAVE-iLab-Machine-Bot says:")
                             embed.set_footer(text="/roomchecks")
                             for guild in bot.guilds:
                                 for channel in guild.channels:
-                                    # if (channel.name.lower() == 'room-check' or channel.name.lower() == 'cave-roomchecks-bot') and str(channel.type).lower() == 'text':
-                                    if (channel.name.lower() == 'cave-roomchecks-bot') and str(channel.type).lower() == 'text':
+                                    if (channel.name.lower() == 'room-check' or channel.name.lower() == 'cave-roomchecks-bot') and str(channel.type).lower() == 'text':
+                                    # if (channel.name.lower() == 'cave-roomchecks-bot') and str(channel.type).lower() == 'text':
                                         send_message = bot.get_guild(guild.id).get_channel(channel.id)
-                                        await send_message.send(file=file, embed=embed)
+                                        with open('images/icon.png', 'rb') as f:
+                                            file = discord.File(f, filename='icon.png')
+                                            await send_message.send(file=file, embed=embed)
                                         break
                         room_checks_done = True
                     else:
                         room_checks_done = False
+                elif current_day in ['Friday']:
+                    if (current_time in ['13:00', ['18:00']] and not room_checks_done):
+                        for room in room_dictionary:
+                            for machine in room_dictionary[room]:
+                                with open(f'ilab_machines/{machine}.json', 'r') as file:
+                                    data = json.load(file)
+                                    if data['host_status'].lower() != 'up':
+                                        downmachines.append((machine, data))
+                        if len(downmachines) > 0:
+                            for machine in downmachines:
+                                result_title = f'**Machine may be down.**'
+                                result_description = f'({current_day} {current_time}) - **{machine[0]}**\'s status is currently down.'
+                                embed = discord.Embed(title=result_title, description=result_description, color=13632027)
+                                file = discord.File(f'images/{machine[1]['room_number']}.png', filename=f'{machine[1]['room_number']}.png')
+                                embed.set_image(url=f'attachment://{machine[1]['room_number']}.png')
+                                embed.set_author(name="CAVE-iLab-Machine-Bot says:")
+                                embed.add_field(name="Machine Name", value=machine[1]['name'], inline=True)
+                                embed.add_field(name="Room Number", value=machine[1]['room_number'], inline=True)
+                                embed.add_field(name="Host Status", value=machine[1]['host_status'], inline=True)
+                                embed.add_field(name="Last Check Time", value=machine[1]['last_check_time'], inline=True)
+                                embed.add_field(name="Next Schedule Active Check", value=machine[1]['next_schedule_active_check'], inline=True)
+                                embed.add_field(name="Is Scheduled Downtime", value=machine[1]['is_scheduled_downtime'], inline=True)
+                                embed.add_field(name="GPU Current Temp", value=machine[1]['gpu_current_temp'], inline=True)
+                                embed.add_field(name="GPU Fans Speed", value=machine[1]['gpu_fan_speed'], inline=True)
+                                embed.add_field(name="Connections", value=machine[1]['connections'], inline=True)
+                                embed.add_field(name="Load", value=machine[1]['load'], inline=True)
+                                embed.add_field(name="Ping", value=machine[1]['ping'], inline=True)
+                                embed.add_field(name="Packet Loss", value=machine[1]['packet_loss'], inline=True)
+                                embed.add_field(name="RTA", value=machine[1]['rta'], inline=True)
+                                embed.add_field(name="Root Disk", value=machine[1]['root_disk'], inline=True)
+                                embed.add_field(name="Smart Failed", value=machine[1]['smart_failed'], inline=True)
+                                embed.add_field(name="Smart Predicted", value=machine[1]['smart_predicted'], inline=True)
+                                embed.add_field(name="SSH", value=machine[1]['ssh'], inline=True)
+                                embed.add_field(name="VarDisk", value=machine[1]['vardisk'], inline=True)
+                                embed.add_field(name="X2GO", value=machine[1]['x2go'], inline=True)
 
+                                embed.set_footer(text="/roomchecks")
+                                for guild in bot.guilds:
+                                    for channel in guild.channels:
+                                        if (channel.name.lower() == 'room-check' or channel.name.lower() == 'cave-roomchecks-bot') and str(channel.type).lower() == 'text':
+                                        # if (channel.name.lower() == 'cave-roomchecks-bot') and str(channel.type).lower() == 'text':
+                                            send_message = bot.get_guild(guild.id).get_channel(channel.id)
+                                            with open('images/icon.png', 'rb') as f:
+                                                file = discord.File(f, filename='icon.png')
+                                                await send_message.send(file=file, embed=embed)
+                                            break
+                        else:
+                            result_title = f'**Machines up and running.**'
+                            result_description = f'({current_day} {current_time}) - All Machines Green'
+                            embed = discord.Embed(title=result_title, description=result_description, color=8311585)
+                            file = discord.File('images/icon.png', filename='icon.png')
+                            embed.set_thumbnail(url='attachment://icon.png')
+                            embed.set_author(name="CAVE-iLab-Machine-Bot says:")
+                            embed.set_footer(text="/roomchecks")
+                            for guild in bot.guilds:
+                                for channel in guild.channels:
+                                    if (channel.name.lower() == 'room-check' or channel.name.lower() == 'cave-roomchecks-bot') and str(channel.type).lower() == 'text':
+                                    # if (channel.name.lower() == 'cave-roomchecks-bot') and str(channel.type).lower() == 'text':
+                                        send_message = bot.get_guild(guild.id).get_channel(channel.id)
+                                        with open('images/icon.png', 'rb') as f:
+                                            file = discord.File(f, filename='icon.png')
+                                            await send_message.send(file=file, embed=embed)
+                                        break
+                        room_checks_done = True
+                    else:
+                        room_checks_done = False
+                elif current_day in ['Sunday']:
+                    if (current_time in ['15:00', ['23:00']] and not room_checks_done):
+                        for room in room_dictionary:
+                            for machine in room_dictionary[room]:
+                                with open(f'ilab_machines/{machine}.json', 'r') as file:
+                                    data = json.load(file)
+                                    if data['host_status'].lower() != 'up':
+                                        downmachines.append((machine, data))
+                        if len(downmachines) > 0:
+                            for machine in downmachines:
+                                result_title = f'**Machine may be down.**'
+                                result_description = f'({current_day} {current_time}) - **{machine[0]}**\'s status is currently down.'
+                                embed = discord.Embed(title=result_title, description=result_description, color=13632027)
+                                file = discord.File(f'images/{machine[1]['room_number']}.png', filename=f'{machine[1]['room_number']}.png')
+                                embed.set_image(url=f'attachment://{machine[1]['room_number']}.png')
+                                embed.set_author(name="CAVE-iLab-Machine-Bot says:")
+                                embed.add_field(name="Machine Name", value=machine[1]['name'], inline=True)
+                                embed.add_field(name="Room Number", value=machine[1]['room_number'], inline=True)
+                                embed.add_field(name="Host Status", value=machine[1]['host_status'], inline=True)
+                                embed.add_field(name="Last Check Time", value=machine[1]['last_check_time'], inline=True)
+                                embed.add_field(name="Next Schedule Active Check", value=machine[1]['next_schedule_active_check'], inline=True)
+                                embed.add_field(name="Is Scheduled Downtime", value=machine[1]['is_scheduled_downtime'], inline=True)
+                                embed.add_field(name="GPU Current Temp", value=machine[1]['gpu_current_temp'], inline=True)
+                                embed.add_field(name="GPU Fans Speed", value=machine[1]['gpu_fan_speed'], inline=True)
+                                embed.add_field(name="Connections", value=machine[1]['connections'], inline=True)
+                                embed.add_field(name="Load", value=machine[1]['load'], inline=True)
+                                embed.add_field(name="Ping", value=machine[1]['ping'], inline=True)
+                                embed.add_field(name="Packet Loss", value=machine[1]['packet_loss'], inline=True)
+                                embed.add_field(name="RTA", value=machine[1]['rta'], inline=True)
+                                embed.add_field(name="Root Disk", value=machine[1]['root_disk'], inline=True)
+                                embed.add_field(name="Smart Failed", value=machine[1]['smart_failed'], inline=True)
+                                embed.add_field(name="Smart Predicted", value=machine[1]['smart_predicted'], inline=True)
+                                embed.add_field(name="SSH", value=machine[1]['ssh'], inline=True)
+                                embed.add_field(name="VarDisk", value=machine[1]['vardisk'], inline=True)
+                                embed.add_field(name="X2GO", value=machine[1]['x2go'], inline=True)
+
+                                embed.set_footer(text="/roomchecks")
+                                for guild in bot.guilds:
+                                    for channel in guild.channels:
+                                        if (channel.name.lower() == 'room-check' or channel.name.lower() == 'cave-roomchecks-bot') and str(channel.type).lower() == 'text':
+                                        # if (channel.name.lower() == 'cave-roomchecks-bot') and str(channel.type).lower() == 'text':
+                                            send_message = bot.get_guild(guild.id).get_channel(channel.id)
+                                            with open('images/icon.png', 'rb') as f:
+                                                file = discord.File(f, filename='icon.png')
+                                                await send_message.send(file=file, embed=embed)
+                                            break
+                        else:
+                            result_title = f'**Machines up and running.**'
+                            result_description = f'({current_day} {current_time}) - All Machines Green'
+                            embed = discord.Embed(title=result_title, description=result_description, color=8311585)
+                            file = discord.File('images/icon.png', filename='icon.png')
+                            embed.set_thumbnail(url='attachment://icon.png')
+                            embed.set_author(name="CAVE-iLab-Machine-Bot says:")
+                            embed.set_footer(text="/roomchecks")
+                            for guild in bot.guilds:
+                                for channel in guild.channels:
+                                    if (channel.name.lower() == 'room-check' or channel.name.lower() == 'cave-roomchecks-bot') and str(channel.type).lower() == 'text':
+                                    # if (channel.name.lower() == 'cave-roomchecks-bot') and str(channel.type).lower() == 'text':
+                                        send_message = bot.get_guild(guild.id).get_channel(channel.id)
+                                        with open('images/icon.png', 'rb') as f:
+                                            file = discord.File(f, filename='icon.png')
+                                            await send_message.send(file=file, embed=embed)
+                                        break
+                        room_checks_done = True
+                    else:
+                        room_checks_done = False
+            elif session_type == 'summer':
+                if current_day in ['Monday', 'Tuesday', 'Wednesday', 'Thursday']:
+                    if (current_time in ['13:00', ['18:00']] and not room_checks_done):
+                        for room in room_dictionary:
+                            for machine in room_dictionary[room]:
+                                with open(f'ilab_machines/{machine}.json', 'r') as file:
+                                    data = json.load(file)
+                                    if data['host_status'].lower() != 'up':
+                                        downmachines.append((machine, data))
+                        if len(downmachines) > 0:
+                            for machine in downmachines:
+                                result_title = f'**Machine may be down.**'
+                                result_description = f'({current_day} {current_time}) - **{machine[0]}**\'s status is currently down.'
+                                embed = discord.Embed(title=result_title, description=result_description, color=13632027)
+                                file = discord.File(f'images/{machine[1]['room_number']}.png', filename=f'{machine[1]['room_number']}.png')
+                                embed.set_image(url=f'attachment://{machine[1]['room_number']}.png')
+                                embed.set_author(name="CAVE-iLab-Machine-Bot says:")
+                                embed.add_field(name="Machine Name", value=machine[1]['name'], inline=True)
+                                embed.add_field(name="Room Number", value=machine[1]['room_number'], inline=True)
+                                embed.add_field(name="Host Status", value=machine[1]['host_status'], inline=True)
+                                embed.add_field(name="Last Check Time", value=machine[1]['last_check_time'], inline=True)
+                                embed.add_field(name="Next Schedule Active Check", value=machine[1]['next_schedule_active_check'], inline=True)
+                                embed.add_field(name="Is Scheduled Downtime", value=machine[1]['is_scheduled_downtime'], inline=True)
+                                embed.add_field(name="GPU Current Temp", value=machine[1]['gpu_current_temp'], inline=True)
+                                embed.add_field(name="GPU Fans Speed", value=machine[1]['gpu_fan_speed'], inline=True)
+                                embed.add_field(name="Connections", value=machine[1]['connections'], inline=True)
+                                embed.add_field(name="Load", value=machine[1]['load'], inline=True)
+                                embed.add_field(name="Ping", value=machine[1]['ping'], inline=True)
+                                embed.add_field(name="Packet Loss", value=machine[1]['packet_loss'], inline=True)
+                                embed.add_field(name="RTA", value=machine[1]['rta'], inline=True)
+                                embed.add_field(name="Root Disk", value=machine[1]['root_disk'], inline=True)
+                                embed.add_field(name="Smart Failed", value=machine[1]['smart_failed'], inline=True)
+                                embed.add_field(name="Smart Predicted", value=machine[1]['smart_predicted'], inline=True)
+                                embed.add_field(name="SSH", value=machine[1]['ssh'], inline=True)
+                                embed.add_field(name="VarDisk", value=machine[1]['vardisk'], inline=True)
+                                embed.add_field(name="X2GO", value=machine[1]['x2go'], inline=True)
+
+                                embed.set_footer(text="/roomchecks")
+                                for guild in bot.guilds:
+                                    for channel in guild.channels:
+                                        if (channel.name.lower() == 'room-check' or channel.name.lower() == 'cave-roomchecks-bot') and str(channel.type).lower() == 'text':
+                                        # if (channel.name.lower() == 'cave-roomchecks-bot') and str(channel.type).lower() == 'text':
+                                            send_message = bot.get_guild(guild.id).get_channel(channel.id)
+                                            with open('images/icon.png', 'rb') as f:
+                                                file = discord.File(f, filename='icon.png')
+                                                await send_message.send(file=file, embed=embed)
+                                            break
+                        else:
+                            result_title = f'**Machines up and running.**'
+                            result_description = f'({current_day} {current_time}) - All Machines Green'
+                            embed = discord.Embed(title=result_title, description=result_description, color=8311585)
+                            file = discord.File('images/icon.png', filename='icon.png')
+                            embed.set_thumbnail(url='attachment://icon.png')
+                            embed.set_author(name="CAVE-iLab-Machine-Bot says:")
+                            embed.set_footer(text="/roomchecks")
+                            for guild in bot.guilds:
+                                for channel in guild.channels:
+                                    if (channel.name.lower() == 'room-check' or channel.name.lower() == 'cave-roomchecks-bot') and str(channel.type).lower() == 'text':
+                                    # if (channel.name.lower() == 'cave-roomchecks-bot') and str(channel.type).lower() == 'text':
+                                        send_message = bot.get_guild(guild.id).get_channel(channel.id)
+                                        with open('images/icon.png', 'rb') as f:
+                                            file = discord.File(f, filename='icon.png')
+                                            await send_message.send(file=file, embed=embed)
+                                        break
+                        room_checks_done = True
+                    else:
+                        room_checks_done = False
+            elif session_type == 'break':
+                continue
             await asyncio.sleep(60)
 
     async def checkmachine(bot : commands.Bot):
@@ -149,7 +354,6 @@ def run_discord_bot():
             for machine in room_dictionary[room]:
                 if machine not in history_dictionary:
                     history_dictionary[machine] = {'status': 'UP'}
-        print(history_dictionary)
         while True:
             for room in room_dictionary:
                 for machine in room_dictionary[room]:
@@ -174,39 +378,44 @@ def run_discord_bot():
 
                     ilab_machine.to_json()
                     if ilab_machine.host_status.lower() != 'up':
+                        current = datetime.datetime.now()
+                        current_day = current.strftime('%A')
+                        current_time = current.strftime('%H:%M')
                         if history_dictionary[machine]['status'].lower() != 'down':
-                            result_title = f'**MACHINE MAY BE DOWN**'
-                            result_description = f'**{machine[0]}**\'s status is currently down.'
+                            result_title = f'**Machine may be down.**'
+                            result_description = f'({current_day} {current_time}) - **{machine[0]}**\'s status is currently down.'
                             embed = discord.Embed(title=result_title, description=result_description, color=13632027)
-                            file = discord.File('images/icon.png', filename='icon.png')
-                            embed.set_thumbnail(url='attachment://icon.png')
+                            file = discord.File(f'images/{machine[1]['room_number']}.png', filename=f'{machine[1]['room_number']}.png')
+                            embed.set_image(url=f'attachment://{machine[1]['room_number']}.png')
                             embed.set_author(name="CAVE-iLab-Machine-Bot says:")
-                            embed.add_field(name="Machine Name", value= ilab_machine.name, inline=True)
-                            embed.add_field(name="Room Number", value= ilab_machine.room_number, inline=True)
-                            embed.add_field(name="Host Status", value= ilab_machine.host_status, inline=True)
-                            embed.add_field(name="Last Check Time", value= ilab_machine.last_check_time, inline=True)
-                            embed.add_field(name="Next Schedule Active Check", value= ilab_machine.next_schedule_active_check, inline=True)
-                            embed.add_field(name="Is Scheduled Downtime", value= ilab_machine.is_scheduled_downtime, inline=True)
-                            embed.add_field(name="GPU Current Temp", value= ilab_machine.gpu_current_temp, inline=True)
-                            embed.add_field(name="GPU Fans Speed", value= ilab_machine.gpu_fan_speed, inline=True)
-                            embed.add_field(name="Connections", value= ilab_machine.connections, inline=True)
-                            embed.add_field(name="Load", value= ilab_machine.load, inline=True)
-                            embed.add_field(name="Ping", value= ilab_machine.ping, inline=True)
-                            embed.add_field(name="Packet Loss", value= ilab_machine.packet_loss, inline=True)
-                            embed.add_field(name="RTA", value= ilab_machine.rta, inline=True)
-                            embed.add_field(name="Root Disk", value= ilab_machine.root_disk, inline=True)
-                            embed.add_field(name="Smart Failed", value= ilab_machine.smart_failed, inline=True)
-                            embed.add_field(name="Smart Predicted", value= ilab_machine.smart_predicted, inline=True)
-                            embed.add_field(name="SSH", value= ilab_machine.ssh, inline=True)
-                            embed.add_field(name="VarDisk", value= ilab_machine.vardisk, inline=True)
-                            embed.add_field(name="X2GO", value= ilab_machine.x2go, inline=True)
+                            embed.add_field(name="Machine Name", value=machine[1]['name'], inline=True)
+                            embed.add_field(name="Room Number", value=machine[1]['room_number'], inline=True)
+                            embed.add_field(name="Host Status", value=machine[1]['host_status'], inline=True)
+                            embed.add_field(name="Last Check Time", value=machine[1]['last_check_time'], inline=True)
+                            embed.add_field(name="Next Schedule Active Check", value=machine[1]['next_schedule_active_check'], inline=True)
+                            embed.add_field(name="Is Scheduled Downtime", value=machine[1]['is_scheduled_downtime'], inline=True)
+                            embed.add_field(name="GPU Current Temp", value=machine[1]['gpu_current_temp'], inline=True)
+                            embed.add_field(name="GPU Fans Speed", value=machine[1]['gpu_fan_speed'], inline=True)
+                            embed.add_field(name="Connections", value=machine[1]['connections'], inline=True)
+                            embed.add_field(name="Load", value=machine[1]['load'], inline=True)
+                            embed.add_field(name="Ping", value=machine[1]['ping'], inline=True)
+                            embed.add_field(name="Packet Loss", value=machine[1]['packet_loss'], inline=True)
+                            embed.add_field(name="RTA", value=machine[1]['rta'], inline=True)
+                            embed.add_field(name="Root Disk", value=machine[1]['root_disk'], inline=True)
+                            embed.add_field(name="Smart Failed", value=machine[1]['smart_failed'], inline=True)
+                            embed.add_field(name="Smart Predicted", value=machine[1]['smart_predicted'], inline=True)
+                            embed.add_field(name="SSH", value=machine[1]['ssh'], inline=True)
+                            embed.add_field(name="VarDisk", value=machine[1]['vardisk'], inline=True)
+                            embed.add_field(name="X2GO", value=machine[1]['x2go'], inline=True)
                             embed.set_footer(text="/checkmachine")
                             for guild in bot.guilds:
                                 for channel in guild.channels:
-                                    # if (channel.name.lower() == 'room-check' or channel.name.lower() == 'cave-roomchecks-bot') and str(channel.type).lower() == 'text':
-                                    if (channel.name.lower() == 'cave-roomchecks-bot') and str(channel.type).lower() == 'text':
+                                    if (channel.name.lower() == 'room-check' or channel.name.lower() == 'cave-roomchecks-bot') and str(channel.type).lower() == 'text':
+                                    # if (channel.name.lower() == 'cave-roomchecks-bot') and str(channel.type).lower() == 'text':
                                         send_message = bot.get_guild(guild.id).get_channel(channel.id)
-                                        await send_message.send(file=file, embed=embed)                                        
+                                        with open('images/icon.png', 'rb') as f:
+                                            file = discord.File(f, filename='icon.png')
+                                            await send_message.send(file=file, embed=embed)
                                         break
                             history_dictionary[machine]['status'] = 'DOWN'
                         else:
@@ -250,7 +459,7 @@ def run_discord_bot():
 
         if completed:
             result_title = f'**SESSION CHANGED** to ***{user_input_session}***'
-            embed = discord.Embed(title=result_title, color=8311585)
+            embed = discord.Embed(title=result_title, description=result_description, color=8311585)
             file = discord.File('images/icon.png', filename='icon.png')
             embed.set_thumbnail(url='attachment://icon.png')
             embed.set_author(name="CAVE-iLab-Machine-Bot says:")
