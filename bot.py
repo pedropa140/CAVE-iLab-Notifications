@@ -377,8 +377,6 @@ def run_discord_bot():
                             result_title = f'**Machine may be down.**'
                             result_description = f'({current_day} {current_time}) - **{machine[0]}**\'s status is currently down.'
                             embed = discord.Embed(title=result_title, description=result_description, color=13632027)
-                            file = discord.File(f'images/{machine[1]['room_number']}.png', filename=f'{machine[1]['room_number']}.png')
-                            embed.set_image(url=f'attachment://{machine[1]['room_number']}.png')
                             embed.set_author(name="CAVE-iLab-Machine-Bot says:")
                             embed.add_field(name="Machine Name", value=machine[1]['name'], inline=True)
                             embed.add_field(name="Room Number", value=machine[1]['room_number'], inline=True)
