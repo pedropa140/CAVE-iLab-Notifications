@@ -119,8 +119,8 @@ def run_discord_bot():
                                         if (channel.name.lower() == 'room-check' or channel.name.lower() == 'cave-roomchecks-bot') and str(channel.type).lower() == 'text':
                                         # if (channel.name.lower() == 'cave-roomchecks-bot') and str(channel.type).lower() == 'text':
                                             send_message = bot.get_guild(guild.id).get_channel(channel.id)
-                                            with open(f'images/{machine[1]['room_number']}.png', 'rb') as f:
-                                                file = discord.File(f, filename=f'{machine[1]['room_number']}.png')
+                                            with open('images/icon.png', 'rb') as f:
+                                                file = discord.File(f, filename='icon.png')
                                                 await send_message.send(file=file, embed=embed)
                                             break
                         else:
@@ -185,8 +185,8 @@ def run_discord_bot():
                                         if (channel.name.lower() == 'room-check' or channel.name.lower() == 'cave-roomchecks-bot') and str(channel.type).lower() == 'text':
                                         # if (channel.name.lower() == 'cave-roomchecks-bot') and str(channel.type).lower() == 'text':
                                             send_message = bot.get_guild(guild.id).get_channel(channel.id)
-                                            with open(f'images/{machine[1]['room_number']}.png', 'rb') as f:
-                                                file = discord.File(f, filename=f'{machine[1]['room_number']}.png')
+                                            with open('images/icon.png', 'rb') as f:
+                                                file = discord.File(f, filename='icon.png')
                                                 await send_message.send(file=file, embed=embed)
                                             break
                         else:
@@ -251,8 +251,8 @@ def run_discord_bot():
                                         if (channel.name.lower() == 'room-check' or channel.name.lower() == 'cave-roomchecks-bot') and str(channel.type).lower() == 'text':
                                         # if (channel.name.lower() == 'cave-roomchecks-bot') and str(channel.type).lower() == 'text':
                                             send_message = bot.get_guild(guild.id).get_channel(channel.id)
-                                            with open(f'images/{machine[1]['room_number']}.png', 'rb') as f:
-                                                file = discord.File(f, filename=f'{machine[1]['room_number']}.png')
+                                            with open('images/icon.png', 'rb') as f:
+                                                file = discord.File(f, filename='icon.png')
                                                 await send_message.send(file=file, embed=embed)
                                             break
                         else:
@@ -318,8 +318,8 @@ def run_discord_bot():
                                         if (channel.name.lower() == 'room-check' or channel.name.lower() == 'cave-roomchecks-bot') and str(channel.type).lower() == 'text':
                                         # if (channel.name.lower() == 'cave-roomchecks-bot') and str(channel.type).lower() == 'text':
                                             send_message = bot.get_guild(guild.id).get_channel(channel.id)
-                                            with open(f'images/{machine[1]['room_number']}.png', 'rb') as f:
-                                                file = discord.File(f, filename=f'{machine[1]['room_number']}.png')
+                                            with open('images/icon.png', 'rb') as f:
+                                                file = discord.File(f, filename='icon.png')
                                                 await send_message.send(file=file, embed=embed)
                                             break
                         else:
@@ -411,8 +411,8 @@ def run_discord_bot():
                                     if (channel.name.lower() == 'room-check' or channel.name.lower() == 'cave-roomchecks-bot') and str(channel.type).lower() == 'text':
                                     # if (channel.name.lower() == 'cave-roomchecks-bot') and str(channel.type).lower() == 'text':
                                         send_message = bot.get_guild(guild.id).get_channel(channel.id)
-                                        with open(f'images/{machine[1]['room_number']}.png', 'rb') as f:
-                                            file = discord.File(f, filename=f'{machine[1]['room_number']}.png')
+                                        with open('images/icon.png', 'rb') as f:
+                                            file = discord.File(f, filename='icon.png')
                                         await send_message.send(file=file, embed=embed)
                                         break
                             history_dictionary[machine]['status'] = 'DOWN'
