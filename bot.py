@@ -79,8 +79,8 @@ def run_discord_bot():
 
             if session_type == 'regular':
                 if current_day in ['Monday', 'Tuesday', 'Wednesday', 'Thursday']:
-                    # if (current_time in ['13:00', ['23:00']] and not room_checks_done):
-                    if current_time == current_time and not room_checks_done:
+                    if (current_time in ['13:00', ['23:00']] and not room_checks_done):
+                    # if current_time == current_time and not room_checks_done:
                         for room in room_dictionary:
                             for machine in room_dictionary[room]:
                                 with open(f'ilab_machines/{machine}.json', 'r') as file:
@@ -121,8 +121,8 @@ def run_discord_bot():
                                         if (channel.name.lower() == 'room-check' or channel.name.lower() == 'cave-roomchecks-bot') and str(channel.type).lower() == 'text':
                                         # if (channel.name.lower() == 'cave-roomchecks-bot') and str(channel.type).lower() == 'text':
                                             send_message = bot.get_guild(guild.id).get_channel(channel.id)
-                                            with open('images/icon.png', 'rb') as f:
-                                                file = discord.File(f, filename='icon.png')
+                                            with open(f'images/{machine[1]['room_number']}.png', 'rb') as f:
+                                                file = discord.File(f, filename=f'{machine[1]['room_number']}.png')
                                                 await send_message.send(file=file, embed=embed)
                                             break
                         else:
@@ -187,8 +187,8 @@ def run_discord_bot():
                                         if (channel.name.lower() == 'room-check' or channel.name.lower() == 'cave-roomchecks-bot') and str(channel.type).lower() == 'text':
                                         # if (channel.name.lower() == 'cave-roomchecks-bot') and str(channel.type).lower() == 'text':
                                             send_message = bot.get_guild(guild.id).get_channel(channel.id)
-                                            with open('images/icon.png', 'rb') as f:
-                                                file = discord.File(f, filename='icon.png')
+                                            with open(f'images/{machine[1]['room_number']}.png', 'rb') as f:
+                                                file = discord.File(f, filename=f'{machine[1]['room_number']}.png')
                                                 await send_message.send(file=file, embed=embed)
                                             break
                         else:
@@ -253,8 +253,8 @@ def run_discord_bot():
                                         if (channel.name.lower() == 'room-check' or channel.name.lower() == 'cave-roomchecks-bot') and str(channel.type).lower() == 'text':
                                         # if (channel.name.lower() == 'cave-roomchecks-bot') and str(channel.type).lower() == 'text':
                                             send_message = bot.get_guild(guild.id).get_channel(channel.id)
-                                            with open('images/icon.png', 'rb') as f:
-                                                file = discord.File(f, filename='icon.png')
+                                            with open(f'images/{machine[1]['room_number']}.png', 'rb') as f:
+                                                file = discord.File(f, filename=f'{machine[1]['room_number']}.png')
                                                 await send_message.send(file=file, embed=embed)
                                             break
                         else:
@@ -320,8 +320,8 @@ def run_discord_bot():
                                         if (channel.name.lower() == 'room-check' or channel.name.lower() == 'cave-roomchecks-bot') and str(channel.type).lower() == 'text':
                                         # if (channel.name.lower() == 'cave-roomchecks-bot') and str(channel.type).lower() == 'text':
                                             send_message = bot.get_guild(guild.id).get_channel(channel.id)
-                                            with open('images/icon.png', 'rb') as f:
-                                                file = discord.File(f, filename='icon.png')
+                                            with open(f'images/{machine[1]['room_number']}.png', 'rb') as f:
+                                                file = discord.File(f, filename=f'{machine[1]['room_number']}.png')
                                                 await send_message.send(file=file, embed=embed)
                                             break
                         else:
@@ -413,9 +413,9 @@ def run_discord_bot():
                                     if (channel.name.lower() == 'room-check' or channel.name.lower() == 'cave-roomchecks-bot') and str(channel.type).lower() == 'text':
                                     # if (channel.name.lower() == 'cave-roomchecks-bot') and str(channel.type).lower() == 'text':
                                         send_message = bot.get_guild(guild.id).get_channel(channel.id)
-                                        with open('images/icon.png', 'rb') as f:
-                                            file = discord.File(f, filename='icon.png')
-                                            await send_message.send(file=file, embed=embed)
+                                        with open(f'images/{machine[1]['room_number']}.png', 'rb') as f:
+                                            file = discord.File(f, filename=f'{machine[1]['room_number']}.png')
+                                        await send_message.send(file=file, embed=embed)
                                         break
                             history_dictionary[machine]['status'] = 'DOWN'
                         else:
@@ -458,14 +458,14 @@ def run_discord_bot():
             completed = True
 
         if completed:
-            result_title = f'**SESSION CHANGED** to ***{user_input_session}***'
+            result_title = f'**Session Changed** to ***{user_input_session}***'
             embed = discord.Embed(title=result_title, description=result_description, color=8311585)
             file = discord.File('images/icon.png', filename='icon.png')
             embed.set_thumbnail(url='attachment://icon.png')
             embed.set_author(name="CAVE-iLab-Machine-Bot says:")
             embed.set_footer(text="/changesession")
         else:
-            result_title = f'**INVALID INPUT**'
+            result_title = f'**Invalid Input**'
             embed = discord.Embed(title=result_title, color=13632027)
             file = discord.File('images/icon.png', filename='icon.png')
             embed.set_thumbnail(url='attachment://icon.png')
