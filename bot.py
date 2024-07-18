@@ -80,8 +80,8 @@ def run_discord_bot():
 
             if session_type == 'regular':
                 if current_day in ['Monday', 'Tuesday', 'Wednesday', 'Thursday']:
-                    if (current_time in ['13:00', ['23:00']] and not room_checks_done):
-                    # if current_time == current_time and not room_checks_done:
+                    # if (current_time in ['13:00', ['23:00']] and not room_checks_done):
+                    if current_time == current_time and not room_checks_done:
                         for room in room_dictionary:
                             for machine in room_dictionary[room]:
                                 with open(f'ilab_machines/{machine}.json', 'r') as file:
@@ -117,8 +117,8 @@ def run_discord_bot():
                                 embed.set_footer(text="/roomchecks")
                                 for guild in bot.guilds:
                                     for channel in guild.channels:
-                                        if (channel.name.lower() == 'room-check' or channel.name.lower() == 'cave-roomchecks-bot') and str(channel.type).lower() == 'text':
-                                        # if (channel.name.lower() == 'cave-roomchecks-bot') and str(channel.type).lower() == 'text':
+                                        # if (channel.name.lower() == 'room-check' or channel.name.lower() == 'cave-roomchecks-bot') and str(channel.type).lower() == 'text':
+                                        if (channel.name.lower() == 'cave-roomchecks-bot') and str(channel.type).lower() == 'text':
                                             send_message = bot.get_guild(guild.id).get_channel(channel.id)
                                             with open('images/icon.png', 'rb') as f:
                                                 file = discord.File(f, filename='icon.png')
@@ -134,8 +134,8 @@ def run_discord_bot():
                             embed.set_footer(text="/roomchecks")
                             for guild in bot.guilds:
                                 for channel in guild.channels:
-                                    if (channel.name.lower() == 'room-check' or channel.name.lower() == 'cave-roomchecks-bot') and str(channel.type).lower() == 'text':
-                                    # if (channel.name.lower() == 'cave-roomchecks-bot') and str(channel.type).lower() == 'text':
+                                    # if (channel.name.lower() == 'room-check' or channel.name.lower() == 'cave-roomchecks-bot') and str(channel.type).lower() == 'text':
+                                    if (channel.name.lower() == 'cave-roomchecks-bot') and str(channel.type).lower() == 'text':
                                         send_message = bot.get_guild(guild.id).get_channel(channel.id)
                                         with open('images/icon.png', 'rb') as f:
                                             file = discord.File(f, filename='icon.png')
@@ -145,7 +145,8 @@ def run_discord_bot():
                     else:
                         room_checks_done = False
                 elif current_day in ['Friday']:
-                    if (current_time in ['13:00', ['18:00']] and not room_checks_done):
+                    # if (current_time in ['13:00', ['18:00']] and not room_checks_done):
+                    if current_time == current_time and not room_checks_done:
                         for room in room_dictionary:
                             for machine in room_dictionary[room]:
                                 with open(f'ilab_machines/{machine}.json', 'r') as file:
@@ -181,8 +182,8 @@ def run_discord_bot():
                                 embed.set_footer(text="/roomchecks")
                                 for guild in bot.guilds:
                                     for channel in guild.channels:
-                                        if (channel.name.lower() == 'room-check' or channel.name.lower() == 'cave-roomchecks-bot') and str(channel.type).lower() == 'text':
-                                        # if (channel.name.lower() == 'cave-roomchecks-bot') and str(channel.type).lower() == 'text':
+                                        # if (channel.name.lower() == 'room-check' or channel.name.lower() == 'cave-roomchecks-bot') and str(channel.type).lower() == 'text':
+                                        if (channel.name.lower() == 'cave-roomchecks-bot') and str(channel.type).lower() == 'text':
                                             send_message = bot.get_guild(guild.id).get_channel(channel.id)
                                             with open('images/icon.png', 'rb') as f:
                                                 file = discord.File(f, filename='icon.png')
@@ -198,8 +199,8 @@ def run_discord_bot():
                             embed.set_footer(text="/roomchecks")
                             for guild in bot.guilds:
                                 for channel in guild.channels:
-                                    if (channel.name.lower() == 'room-check' or channel.name.lower() == 'cave-roomchecks-bot') and str(channel.type).lower() == 'text':
-                                    # if (channel.name.lower() == 'cave-roomchecks-bot') and str(channel.type).lower() == 'text':
+                                    # if (channel.name.lower() == 'room-check' or channel.name.lower() == 'cave-roomchecks-bot') and str(channel.type).lower() == 'text':
+                                    if (channel.name.lower() == 'cave-roomchecks-bot') and str(channel.type).lower() == 'text':
                                         send_message = bot.get_guild(guild.id).get_channel(channel.id)
                                         with open('images/icon.png', 'rb') as f:
                                             file = discord.File(f, filename='icon.png')
@@ -209,7 +210,8 @@ def run_discord_bot():
                     else:
                         room_checks_done = False
                 elif current_day in ['Sunday']:
-                    if (current_time in ['15:00', ['23:00']] and not room_checks_done):
+                    # if (current_time in ['15:00', ['23:00']] and not room_checks_done):
+                    if current_time == current_time and not room_checks_done:
                         for room in room_dictionary:
                             for machine in room_dictionary[room]:
                                 with open(f'ilab_machines/{machine}.json', 'r') as file:
@@ -245,8 +247,8 @@ def run_discord_bot():
                                 embed.set_footer(text="/roomchecks")
                                 for guild in bot.guilds:
                                     for channel in guild.channels:
-                                        if (channel.name.lower() == 'room-check' or channel.name.lower() == 'cave-roomchecks-bot') and str(channel.type).lower() == 'text':
-                                        # if (channel.name.lower() == 'cave-roomchecks-bot') and str(channel.type).lower() == 'text':
+                                        # if (channel.name.lower() == 'room-check' or channel.name.lower() == 'cave-roomchecks-bot') and str(channel.type).lower() == 'text':
+                                        if (channel.name.lower() == 'cave-roomchecks-bot') and str(channel.type).lower() == 'text':
                                             send_message = bot.get_guild(guild.id).get_channel(channel.id)
                                             with open('images/icon.png', 'rb') as f:
                                                 file = discord.File(f, filename='icon.png')
@@ -262,8 +264,8 @@ def run_discord_bot():
                             embed.set_footer(text="/roomchecks")
                             for guild in bot.guilds:
                                 for channel in guild.channels:
-                                    if (channel.name.lower() == 'room-check' or channel.name.lower() == 'cave-roomchecks-bot') and str(channel.type).lower() == 'text':
-                                    # if (channel.name.lower() == 'cave-roomchecks-bot') and str(channel.type).lower() == 'text':
+                                    # if (channel.name.lower() == 'room-check' or channel.name.lower() == 'cave-roomchecks-bot') and str(channel.type).lower() == 'text':
+                                    if (channel.name.lower() == 'cave-roomchecks-bot') and str(channel.type).lower() == 'text':
                                         send_message = bot.get_guild(guild.id).get_channel(channel.id)
                                         with open('images/icon.png', 'rb') as f:
                                             file = discord.File(f, filename='icon.png')
@@ -311,8 +313,8 @@ def run_discord_bot():
                                 embed.set_footer(text="/roomchecks")
                                 for guild in bot.guilds:
                                     for channel in guild.channels:
-                                        if (channel.name.lower() == 'room-check' or channel.name.lower() == 'cave-roomchecks-bot') and str(channel.type).lower() == 'text':
-                                        # if (channel.name.lower() == 'cave-roomchecks-bot') and str(channel.type).lower() == 'text':
+                                        # if (channel.name.lower() == 'room-check' or channel.name.lower() == 'cave-roomchecks-bot') and str(channel.type).lower() == 'text':
+                                        if (channel.name.lower() == 'cave-roomchecks-bot') and str(channel.type).lower() == 'text':
                                             send_message = bot.get_guild(guild.id).get_channel(channel.id)
                                             with open('images/icon.png', 'rb') as f:
                                                 file = discord.File(f, filename='icon.png')
@@ -328,8 +330,8 @@ def run_discord_bot():
                             embed.set_footer(text="/roomchecks")
                             for guild in bot.guilds:
                                 for channel in guild.channels:
-                                    if (channel.name.lower() == 'room-check' or channel.name.lower() == 'cave-roomchecks-bot') and str(channel.type).lower() == 'text':
-                                    # if (channel.name.lower() == 'cave-roomchecks-bot') and str(channel.type).lower() == 'text':
+                                    # if (channel.name.lower() == 'room-check' or channel.name.lower() == 'cave-roomchecks-bot') and str(channel.type).lower() == 'text':
+                                    if (channel.name.lower() == 'cave-roomchecks-bot') and str(channel.type).lower() == 'text':
                                         send_message = bot.get_guild(guild.id).get_channel(channel.id)
                                         with open('images/icon.png', 'rb') as f:
                                             file = discord.File(f, filename='icon.png')
@@ -353,15 +355,15 @@ def run_discord_bot():
                 for machine in room_dictionary[room]:
                     url = f"https://report.cs.rutgers.edu/nagios4/cgi-bin/status.cgi?style=details&host={machine}"
                     page_text = webscraper.fetch_page_content(url).strip('\n')
-                    webscraper.write_to_file(f"{machine}.json", page_text)
+                    webscraper.write_to_file(f"{machine}.txt", page_text)
                     current_network_status_output = webscraper.current_network_status(f'{machine}.json', machine)
-                    os.remove(f'{machine}.json')
+                    os.remove(f'{machine}.txt')
 
                     url = f"https://report.cs.rutgers.edu/nagios4/cgi-bin/extinfo.cgi?type=1&host={machine}"
                     page_text = webscraper.fetch_page_content(url).strip('\n')
-                    webscraper.write_to_file(f"{machine}.json", page_text)
+                    webscraper.write_to_file(f"{machine}.txt", page_text)
                     extended_information_output = webscraper.extended_information(f'{machine}.json', machine)
-                    os.remove(f'{machine}.json')
+                    os.remove(f'{machine}.txt')
 
                     ilab_machine = IlabMachine(machine, room, extended_information_output[0], current_network_status_output[0],
                                             extended_information_output[1], extended_information_output[2], current_network_status_output[1],
