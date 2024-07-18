@@ -354,68 +354,68 @@ def run_discord_bot():
             for room in room_dictionary:
                 for machine in room_dictionary[room]:
                     url = f"https://report.cs.rutgers.edu/nagios4/cgi-bin/status.cgi?style=details&host={machine}"
-                    # page_text = webscraper.fetch_page_content(url).strip('\n')
-                    print(type(webscraper.fetch_page_content(url).strip('\n')))
-                #     webscraper.write_to_file(f"{machine}.txt", page_text)
-                #     current_network_status_output = webscraper.current_network_status(f'{machine}.txt', machine)
-                #     os.remove(f'{machine}.txt')
+                    page_text = webscraper.fetch_page_content(url).strip('\n')
+                    # print(type(webscraper.fetch_page_content(url).strip('\n')))
+                    webscraper.write_to_file(f"{machine}.txt", page_text)
+                    current_network_status_output = webscraper.current_network_status(f'{machine}.txt', machine)
+                    os.remove(f'{machine}.txt')
 
-                #     url = f"https://report.cs.rutgers.edu/nagios4/cgi-bin/extinfo.cgi?type=1&host={machine}"
-                #     page_text = webscraper.fetch_page_content(url).strip('\n')
-                #     webscraper.write_to_file(f"{machine}.txt", page_text)
-                #     extended_information_output = webscraper.extended_information(f'{machine}.txt', machine)
-                #     os.remove(f'{machine}.txt')
+                    url = f"https://report.cs.rutgers.edu/nagios4/cgi-bin/extinfo.cgi?type=1&host={machine}"
+                    page_text = webscraper.fetch_page_content(url).strip('\n')
+                    webscraper.write_to_file(f"{machine}.txt", page_text)
+                    extended_information_output = webscraper.extended_information(f'{machine}.txt', machine)
+                    os.remove(f'{machine}.txt')
 
-                #     ilab_machine = IlabMachine(machine, room, extended_information_output[0], current_network_status_output[0],
-                #                             extended_information_output[1], extended_information_output[2], current_network_status_output[1],
-                #                             current_network_status_output[2], current_network_status_output[3], current_network_status_output[4],
-                #                             current_network_status_output[5], current_network_status_output[6], current_network_status_output[7],
-                #                             current_network_status_output[8], current_network_status_output[9], current_network_status_output[10],
-                #                             current_network_status_output[11], current_network_status_output[12], current_network_status_output[13])
+                    ilab_machine = IlabMachine(machine, room, extended_information_output[0], current_network_status_output[0],
+                                            extended_information_output[1], extended_information_output[2], current_network_status_output[1],
+                                            current_network_status_output[2], current_network_status_output[3], current_network_status_output[4],
+                                            current_network_status_output[5], current_network_status_output[6], current_network_status_output[7],
+                                            current_network_status_output[8], current_network_status_output[9], current_network_status_output[10],
+                                            current_network_status_output[11], current_network_status_output[12], current_network_status_output[13])
 
-                #     ilab_machine.to_json()
-                #     if ilab_machine.host_status.lower() != 'up':
-                #         current = datetime.datetime.now()
-                #         current_day = current.strftime('%A')
-                #         current_time = current.strftime('%H:%M')
-                #         if history_dictionary[machine]['status'].lower() != 'down':
-                #             result_title = f'**Machine may be down.**'
-                #             result_description = f'({current_day} {current_time}) - **{machine[0]}**\'s status is currently down.'
-                #             embed = discord.Embed(title=result_title, description=result_description, color=13632027)
-                #             embed.set_author(name="CAVE-iLab-Machine-Bot says:")
-                #             embed.add_field(name="Machine Name", value=machine[1]['name'], inline=True)
-                #             embed.add_field(name="Room Number", value=machine[1]['room_number'], inline=True)
-                #             embed.add_field(name="Host Status", value=machine[1]['host_status'], inline=True)
-                #             embed.add_field(name="Last Check Time", value=machine[1]['last_check_time'], inline=True)
-                #             embed.add_field(name="Next Schedule Active Check", value=machine[1]['next_schedule_active_check'], inline=True)
-                #             embed.add_field(name="Is Scheduled Downtime", value=machine[1]['is_scheduled_downtime'], inline=True)
-                #             embed.add_field(name="GPU Current Temp", value=machine[1]['gpu_current_temp'], inline=True)
-                #             embed.add_field(name="GPU Fans Speed", value=machine[1]['gpu_fan_speed'], inline=True)
-                #             embed.add_field(name="Connections", value=machine[1]['connections'], inline=True)
-                #             embed.add_field(name="Load", value=machine[1]['load'], inline=True)
-                #             embed.add_field(name="Ping", value=machine[1]['ping'], inline=True)
-                #             embed.add_field(name="Packet Loss", value=machine[1]['packet_loss'], inline=True)
-                #             embed.add_field(name="RTA", value=machine[1]['rta'], inline=True)
-                #             embed.add_field(name="Root Disk", value=machine[1]['root_disk'], inline=True)
-                #             embed.add_field(name="Smart Failed", value=machine[1]['smart_failed'], inline=True)
-                #             embed.add_field(name="Smart Predicted", value=machine[1]['smart_predicted'], inline=True)
-                #             embed.add_field(name="SSH", value=machine[1]['ssh'], inline=True)
-                #             embed.add_field(name="VarDisk", value=machine[1]['vardisk'], inline=True)
-                #             embed.add_field(name="X2GO", value=machine[1]['x2go'], inline=True)
-                #             embed.set_footer(text="/checkmachine")
-                #             for guild in bot.guilds:
-                #                 for channel in guild.channels:
-                #                     if (channel.name.lower() == 'room-check' or channel.name.lower() == 'cave-roomchecks-bot') and str(channel.type).lower() == 'text':
-                #                     # if (channel.name.lower() == 'cave-roomchecks-bot') and str(channel.type).lower() == 'text':
-                #                         send_message = bot.get_guild(guild.id).get_channel(channel.id)
-                #                         with open('images/icon.png', 'rb') as f:
-                #                             file = discord.File(f, filename='icon.png')
-                #                         await send_message.send(file=file, embed=embed)
-                #                         break
-                #             history_dictionary[machine]['status'] = 'DOWN'
-                #         else:
-                #             continue
-                # time.sleep(1)
+                    ilab_machine.to_json()
+                    if ilab_machine.host_status.lower() != 'up':
+                        current = datetime.datetime.now()
+                        current_day = current.strftime('%A')
+                        current_time = current.strftime('%H:%M')
+                        if history_dictionary[machine]['status'].lower() != 'down':
+                            result_title = f'**Machine may be down.**'
+                            result_description = f'({current_day} {current_time}) - **{machine[0]}**\'s status is currently down.'
+                            embed = discord.Embed(title=result_title, description=result_description, color=13632027)
+                            embed.set_author(name="CAVE-iLab-Machine-Bot says:")
+                            embed.add_field(name="Machine Name", value=machine[1]['name'], inline=True)
+                            embed.add_field(name="Room Number", value=machine[1]['room_number'], inline=True)
+                            embed.add_field(name="Host Status", value=machine[1]['host_status'], inline=True)
+                            embed.add_field(name="Last Check Time", value=machine[1]['last_check_time'], inline=True)
+                            embed.add_field(name="Next Schedule Active Check", value=machine[1]['next_schedule_active_check'], inline=True)
+                            embed.add_field(name="Is Scheduled Downtime", value=machine[1]['is_scheduled_downtime'], inline=True)
+                            embed.add_field(name="GPU Current Temp", value=machine[1]['gpu_current_temp'], inline=True)
+                            embed.add_field(name="GPU Fans Speed", value=machine[1]['gpu_fan_speed'], inline=True)
+                            embed.add_field(name="Connections", value=machine[1]['connections'], inline=True)
+                            embed.add_field(name="Load", value=machine[1]['load'], inline=True)
+                            embed.add_field(name="Ping", value=machine[1]['ping'], inline=True)
+                            embed.add_field(name="Packet Loss", value=machine[1]['packet_loss'], inline=True)
+                            embed.add_field(name="RTA", value=machine[1]['rta'], inline=True)
+                            embed.add_field(name="Root Disk", value=machine[1]['root_disk'], inline=True)
+                            embed.add_field(name="Smart Failed", value=machine[1]['smart_failed'], inline=True)
+                            embed.add_field(name="Smart Predicted", value=machine[1]['smart_predicted'], inline=True)
+                            embed.add_field(name="SSH", value=machine[1]['ssh'], inline=True)
+                            embed.add_field(name="VarDisk", value=machine[1]['vardisk'], inline=True)
+                            embed.add_field(name="X2GO", value=machine[1]['x2go'], inline=True)
+                            embed.set_footer(text="/checkmachine")
+                            for guild in bot.guilds:
+                                for channel in guild.channels:
+                                    if (channel.name.lower() == 'room-check' or channel.name.lower() == 'cave-roomchecks-bot') and str(channel.type).lower() == 'text':
+                                    # if (channel.name.lower() == 'cave-roomchecks-bot') and str(channel.type).lower() == 'text':
+                                        send_message = bot.get_guild(guild.id).get_channel(channel.id)
+                                        with open('images/icon.png', 'rb') as f:
+                                            file = discord.File(f, filename='icon.png')
+                                        await send_message.send(file=file, embed=embed)
+                                        break
+                            history_dictionary[machine]['status'] = 'DOWN'
+                        else:
+                            continue
+                time.sleep(1)
 
 
             await asyncio.sleep(300)

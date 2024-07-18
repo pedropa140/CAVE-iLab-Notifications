@@ -4,13 +4,14 @@ from ilabmachine import IlabMachine
 import os
 import datetime
 
-def fetch_page_content(url : str):
+def fetch_page_content(url : str) -> str:
     try:
         response = requests.get(url)
         response.raise_for_status()
 
         soup = BeautifulSoup(response.content, 'html.parser')
         page_text = soup.get_text()
+        print(f"{url}'s Page Type is -> {type(page_text)}")
         return page_text
 
     except requests.exceptions.RequestException as e:
