@@ -354,14 +354,16 @@ def run_discord_bot():
             for room in room_dictionary:
                 for machine in room_dictionary[room]:
                     url = f"https://report.cs.rutgers.edu/nagios4/cgi-bin/status.cgi?style=details&host={machine}"
-                    page_text = webscraper.fetch_page_content(url).strip('\n')
+                    page_text = webscraper.fetch_page_content(url)
+                    page_text.strip('\n')
                     # print(type(webscraper.fetch_page_content(url).strip('\n')))
                     webscraper.write_to_file(f"{machine}.txt", page_text)
                     current_network_status_output = webscraper.current_network_status(f'{machine}.txt', machine)
                     os.remove(f'{machine}.txt')
 
                     url = f"https://report.cs.rutgers.edu/nagios4/cgi-bin/extinfo.cgi?type=1&host={machine}"
-                    page_text = webscraper.fetch_page_content(url).strip('\n')
+                    page_text = webscraper.fetch_page_content(url)
+                    page_text.strip('\n')
                     webscraper.write_to_file(f"{machine}.txt", page_text)
                     extended_information_output = webscraper.extended_information(f'{machine}.txt', machine)
                     os.remove(f'{machine}.txt')
