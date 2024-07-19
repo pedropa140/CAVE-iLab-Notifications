@@ -15,7 +15,7 @@ def fetch_page_content(url : str) -> str:
         return page_text
 
     except requests.exceptions.RequestException as e:
-        return f"Error fetching page content: {e}", None
+        return f"Error fetching page content: {e}"
 
 def write_to_file(filename : str, content : str):
     try:
