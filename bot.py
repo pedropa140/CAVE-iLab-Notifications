@@ -17,6 +17,7 @@ load_dotenv()
 session_type = "summer"
 
 def run_discord_bot():
+    history_dictionary = {}
     TOKEN = os.getenv('DISCORD_TOKEN')
     intents = discord.Intents.all()
     intents.message_content = True
@@ -187,7 +188,7 @@ def run_discord_bot():
                         break
     
     async def checkmachine(bot : commands.Bot):
-        history_dictionary = {}
+        global history_dictionary
         for room in room_dictionary:
             for machine in room_dictionary[room]:
                 if machine not in history_dictionary:
