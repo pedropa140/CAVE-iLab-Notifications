@@ -16,8 +16,7 @@ load_dotenv()
 
 session_type = "summer"
 
-def run_discord_bot():
-    history_dictionary = {}
+def run_discord_bot():    
     TOKEN = os.getenv('DISCORD_TOKEN')
     intents = discord.Intents.all()
     intents.message_content = True
@@ -57,6 +56,12 @@ def run_discord_bot():
         "crayon.cs.rutgers.edu",
         "wax.cs.rutgers.edu"
     ]}
+
+    history_dictionary = {}
+    for room in room_dictionary:
+        for machine in room_dictionary[room]:
+            if machine not in history_dictionary:
+                history_dictionary[machine] = {'status': 'UP'}
     @bot.event
     async def on_ready():
         try:
@@ -189,10 +194,7 @@ def run_discord_bot():
     
     async def checkmachine(bot : commands.Bot):
         global history_dictionary
-        for room in room_dictionary:
-            for machine in room_dictionary[room]:
-                if machine not in history_dictionary:
-                    history_dictionary[machine] = {'status': 'UP'}
+        print(history_dictionary)
         for room in room_dictionary:
             for machine in room_dictionary[room]:
                 url = f"https://report.cs.rutgers.edu/nagios4/cgi-bin/status.cgi?style=details&host={machine}"
