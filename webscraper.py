@@ -171,8 +171,8 @@ if __name__ == '__main__':
             page_text.strip('\n')
             if "Error fetching page content" in page_text:
                 continue
-            webscraper.write_to_file(f"{machine}.txt", page_text)
-            current_network_status_output = webscraper.current_network_status(f'{machine}.txt', machine)
+            write_to_file(f"{machine}.txt", page_text)
+            current_network_status_output = current_network_status(f'{machine}.txt', machine)
             os.remove(f'{machine}.txt')
 
             url = f"https://report.cs.rutgers.edu/nagios4/cgi-bin/extinfo.cgi?type=1&host={machine}"
@@ -180,8 +180,8 @@ if __name__ == '__main__':
             page_text.strip('\n')
             if "Error fetching page content" in page_text:
                 continue
-            webscraper.write_to_file(f"{machine}.txt", page_text)
-            extended_information_output = webscraper.extended_information(f'{machine}.txt', machine)
+            write_to_file(f"{machine}.txt", page_text)
+            extended_information_output = extended_information(f'{machine}.txt', machine)
             os.remove(f'{machine}.txt')
 
             ilab_machine = IlabMachine(machine, room, extended_information_output[0], current_network_status_output[0],
