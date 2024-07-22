@@ -196,6 +196,7 @@ def run_discord_bot():
         schedule.every(5).minutes.do(check_machine, bot)
 
     def check_machine(bot: commands.Bot):
+        print("CHECKING MACHINE!")
         history_dictionary = {}
         
         for room in room_dictionary:
