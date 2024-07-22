@@ -15,6 +15,7 @@ from ilabmachine import IlabMachine
 load_dotenv()
 
 session_type = "summer"
+history_dictionary = {}
 
 def run_discord_bot():    
     TOKEN = os.getenv('DISCORD_TOKEN')
@@ -57,7 +58,6 @@ def run_discord_bot():
         "wax.cs.rutgers.edu"
     ]}
 
-    history_dictionary = {}
     for room in room_dictionary:
         for machine in room_dictionary[room]:
             if machine not in history_dictionary:
