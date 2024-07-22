@@ -63,7 +63,6 @@ def run_discord_bot():
             synced = await bot.tree.sync()
             print(f'Synced {synced} command(s)')
             print(f'Synced {len(synced)} command(s)')
-            # bot.loop.create_task(checkmachine(bot))
             setup_scheduler()            
             print(f'{bot.user} is now running!')
             async def run_scheduler():
@@ -189,6 +188,7 @@ def run_discord_bot():
                         break
     
     async def checkmachine(bot : commands.Bot):
+        print("CHECKING MACHINE")
         history_dictionary = {}
         for room in room_dictionary:
             for machine in room_dictionary[room]:
