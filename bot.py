@@ -167,8 +167,8 @@ def run_discord_bot():
                 embed.set_footer(text="/roomchecks")
                 for guild in bot.guilds:
                     for channel in guild.channels:
-                        # if (channel.name.lower() == 'room-check' or channel.name.lower() == 'cave-roomchecks-bot') and str(channel.type).lower() == 'text':
-                        if (channel.name.lower() == 'cave-roomchecks-bot') and str(channel.type).lower() == 'text':
+                        if (channel.name.lower() == 'room-check' or channel.name.lower() == 'cave-roomchecks-bot') and str(channel.type).lower() == 'text':
+                        # if (channel.name.lower() == 'cave-roomchecks-bot') and str(channel.type).lower() == 'text':
                             send_message = bot.get_guild(guild.id).get_channel(channel.id)
                             with open('images/icon.png', 'rb') as f:
                                 file = discord.File(f, filename='icon.png')
@@ -184,8 +184,8 @@ def run_discord_bot():
             embed.set_footer(text="/roomchecks")
             for guild in bot.guilds:
                 for channel in guild.channels:
-                    # if (channel.name.lower() == 'room-check' or channel.name.lower() == 'cave-roomchecks-bot') and str(channel.type).lower() == 'text':
-                    if (channel.name.lower() == 'cave-roomchecks-bot') and str(channel.type).lower() == 'text':
+                    if (channel.name.lower() == 'room-check' or channel.name.lower() == 'cave-roomchecks-bot') and str(channel.type).lower() == 'text':
+                    # if (channel.name.lower() == 'cave-roomchecks-bot') and str(channel.type).lower() == 'text':
                         send_message = bot.get_guild(guild.id).get_channel(channel.id)
                         with open('images/icon.png', 'rb') as f:
                             file = discord.File(f, filename='icon.png')
@@ -254,8 +254,8 @@ def run_discord_bot():
                         embed.set_footer(text="/checkmachine")
                         for guild in bot.guilds:
                             for channel in guild.channels:
-                                # if (channel.name.lower() == 'room-check' or channel.name.lower() == 'cave-roomchecks-bot') and str(channel.type).lower() == 'text':
-                                if (channel.name.lower() == 'cave-roomchecks-bot') and str(channel.type).lower() == 'text':
+                                if (channel.name.lower() == 'room-check' or channel.name.lower() == 'cave-roomchecks-bot') and str(channel.type).lower() == 'text':
+                                # if (channel.name.lower() == 'cave-roomchecks-bot') and str(channel.type).lower() == 'text':
                                     send_message = bot.get_guild(guild.id).get_channel(channel.id)
                                     with open('images/icon.png', 'rb') as f:
                                         file = discord.File(f, filename='icon.png')
