@@ -3,6 +3,7 @@ import requests
 from ilabmachine import IlabMachine
 import os
 import datetime
+import time
 
 def fetch_page_content(url : str) -> str:
     try:
@@ -11,7 +12,6 @@ def fetch_page_content(url : str) -> str:
 
         soup = BeautifulSoup(response.content, 'html.parser')
         page_text = soup.get_text()
-        print(f"{url}'s Page Type is -> {type(page_text)}")
         return page_text
 
     except requests.exceptions.RequestException as e:
@@ -26,29 +26,56 @@ def write_to_file(filename : str, content : str):
     except IOError as e:
         print(f"Error writing to file: {e}")
 
-def current_network_status(file_name : str, machine_name : str):
+def current_network_status(file_name: str, machine_name: str):
+    GREEN = "\033[92m"
+    RED = "\033[91m"
+    RESET = "\033[0m"
+    
     with open(file_name, "r") as file:
-        lines = file.readlines()
-        last_checked = lines[2].split()[2:]
-        last_checked_output = f'{last_checked[0]} {last_checked[1]} {last_checked[2]} {last_checked[3]} {last_checked[5]} {last_checked[4]}'
-        temperature_status = lines[51].split()[3]
-        gpu_fan_speed = lines[57].split()[3]
-        connections = lines[63].split()[3]
+        try:
+            lines = file.readlines()
+            last_checked = lines[2].split()[2:]
+            last_checked_output = f'{last_checked[0]} {last_checked[1]} {last_checked[2]} {last_checked[3]} {last_checked[5]} {last_checked[4]}'
+            temperature_status = int(lines[51].split()[3])
+            gpu_fan_speed = int(lines[57].split()[3])
+            connections = int(lines[63].split()[3])
+            
+            load = lines[69].split()[3]
+            ping = lines[75].split()[1]
+            packet_loss = lines[75].split()[6]
+            rta = " ".join(lines[75].split()[9:])
+            root_disk = int(lines[81].split()[3])
+            smartfailed = int(lines[87].split()[3])
+            smartpredicted = int(lines[93].split()[3])
+            ssh = lines[105].split()[0]
+            ssh = int(ssh.replace("Logins=", ""))
+            vardisk = int(lines[117].split()[3])
+            x2go = int(lines[123].split()[3])
+            
+            print(f"{GREEN}Success: {machine_name}{RESET}")
+            
+            return [last_checked, temperature_status, gpu_fan_speed, connections, load, ping, packet_loss, rta, root_disk, smartfailed, smartpredicted, ssh, vardisk, x2go]
         
-        load = lines[69].split()[3]
-        ping = lines[75].split()[1]
-        packet_loss = lines[75].split()[6]
-        rta = " ".join(lines[75].split()[9:])
-        root_disk = lines[81].split()[3]
-        smartfailed = lines[87].split()[3]
-        smartpredicted = lines[93].split()[3]
-        ssh = lines[105].split()[0]
-        ssh = ssh.replace("Logins=", "")
-        print(ssh)
-        vardisk = lines[117].split()[3]
-        x2go = lines[123].split()[3]
-    return [last_checked, int(temperature_status), int(gpu_fan_speed), int(connections), load, ping,
-            packet_loss, rta, int(root_disk), int(smartfailed), int(smartpredicted), int(ssh), int(vardisk), int(x2go)]    
+        except Exception as e:
+            parts = lines[51].split()
+            temperature_status = parts[8] + " " + " ".join(parts[2:7]).replace(":", "")
+            gpu_fan_speed = lines[57].split()[8] + " " + " ".join(lines[51].split()[2:7]).replace(":", "")
+            connections = lines[63].split()[8] + " " + " ".join(lines[51].split()[2:7]).replace(":", "")
+            
+            load = lines[69].split()[8] + " " + " ".join(lines[51].split()[2:7]).replace(":", "")
+            ping = lines[75].split()[1]
+            packet_loss = "".join(lines[75].split()[6:])
+            rta = "Not Found"
+            root_disk = lines[81].split()[8] + " " + " ".join(lines[51].split()[2:7]).replace(":", "")
+            smartfailed = lines[87].split()[8] + " " + " ".join(lines[51].split()[2:7]).replace(":", "")
+            smartpredicted = lines[93].split()[8] + " " + " ".join(lines[51].split()[2:7]).replace(":", "")
+            ssh = " ".join(lines[99].split())
+            vardisk = lines[117].split()[8] + " " + " ".join(lines[51].split()[2:7]).replace(":", "")
+            x2go = lines[123].split()[8] + " " + " ".join(lines[51].split()[2:7]).replace(":", "")
+            
+            print(f"{RED}Critical: {machine_name}{RESET}")
+            
+            return [last_checked, temperature_status, gpu_fan_speed, connections, load, ping, packet_loss, rta, root_disk, smartfailed, smartpredicted, ssh, vardisk, x2go]
 
 def extended_information(file_name : str, machine_name : str):
     with open(file_name, 'r') as file:
@@ -61,7 +88,7 @@ def extended_information(file_name : str, machine_name : str):
 if __name__ == '__main__':
     room_dictionary = {248: [
         "cd.cs.rutgers.edu",
-        "cd.cs.rutgers.edu",
+        "cp.cs.rutgers.edu",
         "grep.cs.rutgers.edu",
         "kill.cs.rutgers.edu",
         "less.cs.rutgers.edu",
@@ -100,47 +127,48 @@ if __name__ == '__main__':
                 return key
         return None
 
-    machine = 'assembly.cs.rutgers.edu'
-    # https://report.cs.rutgers.edu/nagios4/cgi-bin/status.cgi?style=details&host=assembly.cs.rutgers.edu
-    url = f"https://report.cs.rutgers.edu/nagios4/cgi-bin/status.cgi?style=details&host={machine}"
-    page_text = fetch_page_content(url).strip('\n')
-    write_to_file(f"ilab_machines/{machine}.txt", page_text)
-    current_network_status_output = current_network_status(f'ilab_machines/{machine}.txt', machine)
-    os.remove(f'ilab_machines/{machine}.txt')
+    # machine = 'crayon.cs.rutgers.edu'
+    # # https://report.cs.rutgers.edu/nagios4/cgi-bin/status.cgi?style=details&host=assembly.cs.rutgers.edu
+    # status_url = f"https://report.cs.rutgers.edu/nagios4/cgi-bin/status.cgi?style=details&host={machine}"
+    # page_text = fetch_page_content(status_url).strip('\n')
+    # write_to_file(f"ilab_machines/{machine}.txt", page_text)
+    # current_network_status_output = current_network_status(f'ilab_machines/{machine}.txt', machine)
+    # exit(1)
+    # os.remove(f'ilab_machines/{machine}.txt')
 
-    url = f"https://report.cs.rutgers.edu/nagios4/cgi-bin/extinfo.cgi?type=1&host={machine}"
-    page_text = fetch_page_content(url).strip('\n')
-    write_to_file(f"ilab_machines/{machine}.txt", page_text)
-    extended_information_output = extended_information(f'ilab_machines/{machine}.txt', machine)
+    # time.sleep(1)
 
-    key = find_key_by_value(machine + '.cs.rutgers.edu')
-    ilab_machine = IlabMachine(machine + '.cs.rutgers.edu', key, extended_information_output[0], current_network_status_output[0],
-                               extended_information_output[1], extended_information_output[2], current_network_status_output[1],
-                               current_network_status_output[2], current_network_status_output[3], current_network_status_output[4],
-                               current_network_status_output[5], current_network_status_output[6], current_network_status_output[7],
-                               current_network_status_output[8], current_network_status_output[9], current_network_status_output[10],
-                               current_network_status_output[11], current_network_status_output[12], current_network_status_output[13])
+    # extend_url = f"https://report.cs.rutgers.edu/nagios4/cgi-bin/extinfo.cgi?type=1&host={machine}"
+    # page_text = fetch_page_content(extend_url).strip('\n')
+    # write_to_file(f"ilab_machines/{machine}.txt", page_text)
+    # extended_information_output = extended_information(f'ilab_machines/{machine}.txt', machine)
+
+    # key = find_key_by_value(machine + '.cs.rutgers.edu')
+    # ilab_machine = IlabMachine(machine + '.cs.rutgers.edu', key, extended_information_output[0], current_network_status_output[0],
+    #                            extended_information_output[1], extended_information_output[2], current_network_status_output[1],
+    #                            current_network_status_output[2], current_network_status_output[3], current_network_status_output[4],
+    #                            current_network_status_output[5], current_network_status_output[6], current_network_status_output[7],
+    #                            current_network_status_output[8], current_network_status_output[9], current_network_status_output[10],
+    #                            current_network_status_output[11], current_network_status_output[12], current_network_status_output[13])
     
     for room in room_dictionary:
         for machine in room_dictionary[room]:
-            page_text = fetch_page_content(url)
-            page_text.strip('\n')
-            if "Error fetching page content" in page_text:
-                continue
+            status_url = f"https://report.cs.rutgers.edu/nagios4/cgi-bin/status.cgi?style=details&host={machine}"
+            page_text = fetch_page_content(status_url).strip('\n')
             write_to_file(f"ilab_machines/{machine}.txt", page_text)
             current_network_status_output = current_network_status(f'ilab_machines/{machine}.txt', machine)
             os.remove(f'ilab_machines/{machine}.txt')
 
-            url = f"https://report.cs.rutgers.edu/nagios4/cgi-bin/extinfo.cgi?type=1&host={machine}"
-            page_text = fetch_page_content(url)
-            page_text.strip('\n')
-            if "Error fetching page content" in page_text:
-                continue
+            time.sleep(1)
+
+            extend_url = f"https://report.cs.rutgers.edu/nagios4/cgi-bin/extinfo.cgi?type=1&host={machine}"
+            page_text = fetch_page_content(extend_url).strip('\n')
             write_to_file(f"ilab_machines/{machine}.txt", page_text)
             extended_information_output = extended_information(f'ilab_machines/{machine}.txt', machine)
             os.remove(f'ilab_machines/{machine}.txt')
 
-            ilab_machine = IlabMachine(machine, room, extended_information_output[0], current_network_status_output[0],
+            key = find_key_by_value(machine + '.cs.rutgers.edu')
+            ilab_machine = IlabMachine(machine + '.cs.rutgers.edu', key, extended_information_output[0], current_network_status_output[0],
                                     extended_information_output[1], extended_information_output[2], current_network_status_output[1],
                                     current_network_status_output[2], current_network_status_output[3], current_network_status_output[4],
                                     current_network_status_output[5], current_network_status_output[6], current_network_status_output[7],

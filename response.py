@@ -19,7 +19,11 @@ async def status(interaction : discord.Interaction, machine : str, room_dictiona
             data = json.load(file)
             print(data)
             result_title = f'****{machine}****'
-            embed = discord.Embed(title=result_title, color=8311585)
+            # embed = discord.Embed(title=result_title, color=8311585)
+            if data['host_status'] == "DOWN":
+                embed = discord.Embed(title=result_title, color=13632027)
+            else:
+                embed = discord.Embed(title=result_title, color=8311585)
             file = discord.File('images/icon.png', filename='icon.png')
             embed.set_thumbnail(url='attachment://icon.png')
             embed.set_author(name="CAVE-iLab-Machine-Bot says:")

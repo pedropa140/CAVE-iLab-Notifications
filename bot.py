@@ -24,7 +24,7 @@ def run_discord_bot():
     bot = commands.Bot(command_prefix="!", intents=intents)
     room_dictionary = {248: [
         "cd.cs.rutgers.edu",
-        "cd.cs.rutgers.edu",
+        "cp.cs.rutgers.edu",
         "grep.cs.rutgers.edu",
         "kill.cs.rutgers.edu",
         "less.cs.rutgers.edu",
@@ -68,13 +68,21 @@ def run_discord_bot():
             synced = await bot.tree.sync()
             print(f'Synced {synced} command(s)')
             print(f'Synced {len(synced)} command(s)')
+            await perform_room_checks()
+            await checkmachine(bot)
+
+            # Start the scheduler after checkmachine has been called
             setup_scheduler()            
             print(f'{bot.user} is now running!')
+
+            # Run the scheduler in the background
             async def run_scheduler():
                 while True:
                     schedule.run_pending()
                     await asyncio.sleep(60)
+                    
             asyncio.create_task(run_scheduler())
+            
         except Exception as e:
             print(e)
         
@@ -172,7 +180,8 @@ def run_discord_bot():
                             send_message = bot.get_guild(guild.id).get_channel(channel.id)
                             with open('images/icon.png', 'rb') as f:
                                 file = discord.File(f, filename='icon.png')
-                                await send_message.send(file=file, embed=embed)
+                                embed.set_thumbnail(url='attachment://icon.png')
+                            await send_message.send(file=file, embed=embed)
                             break
         else:
             result_title = f'**Machines up and running.**'
@@ -189,7 +198,8 @@ def run_discord_bot():
                         send_message = bot.get_guild(guild.id).get_channel(channel.id)
                         with open('images/icon.png', 'rb') as f:
                             file = discord.File(f, filename='icon.png')
-                            await send_message.send(file=file, embed=embed)
+                            embed.set_thumbnail(url='attachment://icon.png')
+                        await send_message.send(file=file, embed=embed)
                         break
     
     async def checkmachine(bot : commands.Bot):
@@ -223,34 +233,37 @@ def run_discord_bot():
                                         current_network_status_output[11], current_network_status_output[12], current_network_status_output[13])
 
                 ilab_machine.to_json()
+                time.sleep(1)
                 if ilab_machine.host_status.lower() != 'up':
                     current = datetime.datetime.now()
                     current_day = current.strftime('%A')
                     current_time = current.strftime('%H:%M')
+                    with open(f'ilab_machines/{machine}.json', 'r') as file:
+                        ilab_down_data = json.load(file)
                     if history_dictionary[machine]['status'].lower() != 'down':
                         result_title = f'**Machine may be down.**'
-                        result_description = f'({current_day} {current_time}) - **{machine[0]}**\'s status is currently down.'
+                        result_description = f'({current_day} {current_time}) - **{machine}**\'s status is currently down.'
                         embed = discord.Embed(title=result_title, description=result_description, color=13632027)
                         embed.set_author(name="CAVE-iLab-Machine-Bot says:")
-                        embed.add_field(name="Machine Name", value=machine[1]['name'], inline=True)
-                        embed.add_field(name="Room Number", value=machine[1]['room_number'], inline=True)
-                        embed.add_field(name="Host Status", value=machine[1]['host_status'], inline=True)
-                        embed.add_field(name="Last Check Time", value=machine[1]['last_check_time'], inline=True)
-                        embed.add_field(name="Next Schedule Active Check", value=machine[1]['next_schedule_active_check'], inline=True)
-                        embed.add_field(name="Is Scheduled Downtime", value=machine[1]['is_scheduled_downtime'], inline=True)
-                        embed.add_field(name="GPU Current Temp", value=machine[1]['gpu_current_temp'], inline=True)
-                        embed.add_field(name="GPU Fans Speed", value=machine[1]['gpu_fan_speed'], inline=True)
-                        embed.add_field(name="Connections", value=machine[1]['connections'], inline=True)
-                        embed.add_field(name="Load", value=machine[1]['load'], inline=True)
-                        embed.add_field(name="Ping", value=machine[1]['ping'], inline=True)
-                        embed.add_field(name="Packet Loss", value=machine[1]['packet_loss'], inline=True)
-                        embed.add_field(name="RTA", value=machine[1]['rta'], inline=True)
-                        embed.add_field(name="Root Disk", value=machine[1]['root_disk'], inline=True)
-                        embed.add_field(name="Smart Failed", value=machine[1]['smart_failed'], inline=True)
-                        embed.add_field(name="Smart Predicted", value=machine[1]['smart_predicted'], inline=True)
-                        embed.add_field(name="SSH", value=machine[1]['ssh'], inline=True)
-                        embed.add_field(name="VarDisk", value=machine[1]['vardisk'], inline=True)
-                        embed.add_field(name="X2GO", value=machine[1]['x2go'], inline=True)
+                        embed.add_field(name="Machine Name", value=ilab_down_data['name'], inline=True)
+                        embed.add_field(name="Room Number", value=ilab_down_data['room_number'], inline=True)
+                        embed.add_field(name="Host Status", value=ilab_down_data['host_status'], inline=True)
+                        embed.add_field(name="Last Check Time", value=ilab_down_data['last_check_time'], inline=True)
+                        embed.add_field(name="Next Schedule Active Check", value=ilab_down_data['next_schedule_active_check'], inline=True)
+                        embed.add_field(name="Is Scheduled Downtime", value=ilab_down_data['is_scheduled_downtime'], inline=True)
+                        embed.add_field(name="GPU Current Temp", value=ilab_down_data['gpu_current_temp'], inline=True)
+                        embed.add_field(name="GPU Fans Speed", value=ilab_down_data['gpu_fan_speed'], inline=True)
+                        embed.add_field(name="Connections", value=ilab_down_data['connections'], inline=True)
+                        embed.add_field(name="Load", value=ilab_down_data['load'], inline=True)
+                        embed.add_field(name="Ping", value=ilab_down_data['ping'], inline=True)
+                        embed.add_field(name="Packet Loss", value=ilab_down_data['packet_loss'], inline=True)
+                        embed.add_field(name="RTA", value=ilab_down_data['rta'], inline=True)
+                        embed.add_field(name="Root Disk", value=ilab_down_data['root_disk'], inline=True)
+                        embed.add_field(name="Smart Failed", value=ilab_down_data['smart_failed'], inline=True)
+                        embed.add_field(name="Smart Predicted", value=ilab_down_data['smart_predicted'], inline=True)
+                        embed.add_field(name="SSH", value=ilab_down_data['ssh'], inline=True)
+                        embed.add_field(name="VarDisk", value=ilab_down_data['vardisk'], inline=True)
+                        embed.add_field(name="X2GO", value=ilab_down_data['x2go'], inline=True)
                         embed.set_footer(text="/checkmachine")
                         for guild in bot.guilds:
                             for channel in guild.channels:
@@ -259,6 +272,7 @@ def run_discord_bot():
                                     send_message = bot.get_guild(guild.id).get_channel(channel.id)
                                     with open('images/icon.png', 'rb') as f:
                                         file = discord.File(f, filename='icon.png')
+                                        embed.set_thumbnail(url='attachment://icon.png')
                                     await send_message.send(file=file, embed=embed)
                                     break
                         history_dictionary[machine]['status'] = 'DOWN'
