@@ -34,7 +34,7 @@ def current_network_status(file_name: str, machine_name: str):
     with open(file_name, "r") as file:
         try:
             lines = file.readlines()
-            last_checked = lines[2].split()[2:]
+            last_checked = " ".join(lines[2].split()[2:])
             last_checked_output = f'{last_checked[0]} {last_checked[1]} {last_checked[2]} {last_checked[3]} {last_checked[5]} {last_checked[4]}'
             temperature_status = int(lines[51].split()[3])
             gpu_fan_speed = int(lines[57].split()[3])
