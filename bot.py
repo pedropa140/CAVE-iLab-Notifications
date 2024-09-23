@@ -230,8 +230,7 @@ def run_discord_bot():
                                         current_network_status_output[11], current_network_status_output[12], current_network_status_output[13])
 
                 ilab_machine.to_json()
-                # time.sleep(1)
-                await asyncio.wait(1)
+                time.sleep(0.5)
                 if ilab_machine.host_status.lower() != 'up':
                     current = datetime.datetime.now()
                     current_day = current.strftime('%A')
@@ -276,8 +275,7 @@ def run_discord_bot():
                         history_dictionary[machine]['status'] = 'DOWN'
                     else:
                         continue
-            # time.sleep(1)
-            await asyncio.wait(1)
+            time.sleep(0.5)
 
     def setup_scheduler():
         schedule.every(5).minutes.do(lambda: asyncio.create_task(checkmachine(bot)))
