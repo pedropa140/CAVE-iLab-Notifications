@@ -16,6 +16,9 @@ load_dotenv()
 
 session_type = "summer"
 history_dictionary = {}
+GREEN = "\033[92m"
+RED = "\033[91m"
+RESET = "\033[0m"
 
 def run_discord_bot():    
     TOKEN = os.getenv('DISCORD_TOKEN')
@@ -66,8 +69,8 @@ def run_discord_bot():
     async def on_ready():
         try:
             synced = await bot.tree.sync()
-            print(f'Synced {synced} command(s)')
-            print(f'Synced {len(synced)} command(s)')
+            print(f'{GREEN}Synced {synced} command(s){RESET}')
+            print(f'{GREEN}Synced {len(synced)} command(s){RESET}')
             await checkmachine(bot)
 
             # Start the scheduler after checkmachine has been called
@@ -83,7 +86,7 @@ def run_discord_bot():
             asyncio.create_task(run_scheduler())
             
         except Exception as e:
-            print(e)
+            print(f'{RED}{e}{RESET}')
         
     async def perform_room_checks():
         global room_checks_done
@@ -231,8 +234,8 @@ def run_discord_bot():
                                         current_network_status_output[8], current_network_status_output[9], current_network_status_output[10],
                                         current_network_status_output[11], current_network_status_output[12], current_network_status_output[13])
 
-                ilab_machine.to_json()
-                time.sleep(1)
+                ilab_machine.to_json()                
+                asyncio.wait(1)
                 if ilab_machine.host_status.lower() != 'up':
                     current = datetime.datetime.now()
                     current_day = current.strftime('%A')
@@ -277,7 +280,7 @@ def run_discord_bot():
                         history_dictionary[machine]['status'] = 'DOWN'
                     else:
                         continue
-            time.sleep(1)
+            asyncio.wait(1)
 
     def setup_scheduler():
         schedule.every(5).minutes.do(lambda: asyncio.create_task(checkmachine(bot)))
