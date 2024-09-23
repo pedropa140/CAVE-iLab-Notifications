@@ -11,9 +11,10 @@ import time
 import response
 import webscraper
 from ilabmachine import IlabMachine
+import logging
 
 load_dotenv()
-
+logging.basicConfig(filename='bot_events.log', level=logging.INFO, format='%(asctime)s:%(levelname)s:%(message)s')
 session_type = "summer"
 history_dictionary = {}
 
@@ -67,12 +68,13 @@ def run_discord_bot():
         try:
             synced = await bot.tree.sync()
             print(f'Synced {synced} command(s)')
+            logging.info(f'Synced {len(synced)} command(s)')
             print(f'Synced {len(synced)} command(s)')
             await checkmachine(bot)
 
             setup_scheduler()            
             print(f'{bot.user} is now running!')
-
+            logging.info(f'{bot.user} is now running!')
             async def run_scheduler():
                 while True:
                     schedule.run_pending()
@@ -81,6 +83,7 @@ def run_discord_bot():
             asyncio.create_task(run_scheduler())
             
         except Exception as e:
+            logging.error(f'Error in on_ready: {e}')
             print(e)
         
     async def perform_room_checks():
@@ -146,6 +149,7 @@ def run_discord_bot():
         if len(downmachines) > 0:
             for machine in downmachines:
                 result_title = f'**Machine may be down.**'
+                logging.warning(f'{machine[0]} is down')
                 result_description = f'({current_day} {current_time}) - **{machine[0]}**\'s status is currently down.'
                 embed = discord.Embed(title=result_title, description=result_description, color=13632027)
                 embed.set_author(name="CAVE-iLab-Machine-Bot says:")
@@ -179,9 +183,11 @@ def run_discord_bot():
                                 file = discord.File(f, filename='icon.png')
                                 embed.set_thumbnail(url='attachment://icon.png')
                             await send_message.send(file=file, embed=embed)
+                            logging.warning(f"Sent machine-down roomchecks to {guild.name}")
                             break
         else:
             result_title = f'**Machines up and running.**'
+            logging.info('All machines are running normally')
             result_description = f'({current_day} {current_time}) - All Machines Green'
             embed = discord.Embed(title=result_title, description=result_description, color=8311585)
             file = discord.File('images/icon.png', filename='icon.png')
@@ -197,17 +203,19 @@ def run_discord_bot():
                             file = discord.File(f, filename='icon.png')
                             embed.set_thumbnail(url='attachment://icon.png')
                         await send_message.send(file=file, embed=embed)
+                        logging.info(f"Sent green status roomchecks to {guild.name}")
                         break
     
     async def checkmachine(bot : commands.Bot):
         global history_dictionary
-        print(history_dictionary)
+        logging.info('Starting machine check')
         for room in room_dictionary:
             for machine in room_dictionary[room]:
                 url = f"https://report.cs.rutgers.edu/nagios4/cgi-bin/status.cgi?style=details&host={machine}"
                 page_text = webscraper.fetch_page_content(url)
                 page_text.strip('\n')
                 if "Error fetching page content" in page_text:
+                    logging.error(f'Error fetching page content for {machine}')
                     continue
                 webscraper.write_to_file(f"{machine}.txt", page_text)
                 current_network_status_output = webscraper.current_network_status(f'{machine}.txt', machine)
@@ -217,6 +225,7 @@ def run_discord_bot():
                 page_text = webscraper.fetch_page_content(url)
                 page_text.strip('\n')
                 if "Error fetching page content" in page_text:
+                    logging.error(f'Error fetching page content for {machine}')
                     continue
                 webscraper.write_to_file(f"{machine}.txt", page_text)
                 extended_information_output = webscraper.extended_information(f'{machine}.txt', machine)
@@ -271,6 +280,8 @@ def run_discord_bot():
                                         file = discord.File(f, filename='icon.png')
                                         embed.set_thumbnail(url='attachment://icon.png')
                                     await send_message.send(file=file, embed=embed)
+                                    
+                                    logging.info(f"Sent warning machine-check for {machine} to {guild.name}")
                                     break
                         history_dictionary[machine]['status'] = 'DOWN'
                     else:
@@ -283,6 +294,7 @@ def run_discord_bot():
         schedule.every().day.at('23:00').do(lambda: asyncio.create_task(perform_room_checks()))
         schedule.every().day.at('18:00').do(lambda: asyncio.create_task(perform_room_checks()))
         schedule.every().day.at('15:00').do(lambda: asyncio.create_task(perform_room_checks()))  
+        logging.info('Scheduler setup complete')
 
     @bot.tree.command(name = "status", description = "Get a Status of an iLab Machine.")
     @app_commands.describe(machine = "Enter iLab Machine Name (e.g. If you want to check batch.cs.rutgers.edu ... Enter batch)")
@@ -292,8 +304,8 @@ def run_discord_bot():
         user_message = str(interaction.command.name)
         channel = str(interaction.channel)
         print(f'{username} ({mention}) said: "{user_message}" ({channel})')
-
         await response.status(interaction, machine, room_dictionary)
+        logging.info(f'{username} checked machine')
 
     @bot.tree.command(name = "changesession", description = "Change session on how the bot pings everyone.")
     @app_commands.describe(user_input_session = "Enter [regular] or [summer] or [break]")
@@ -304,8 +316,8 @@ def run_discord_bot():
         channel = str(interaction.channel)
         print(f'{username} ({mention}) said: "{user_message}" ({channel})')
         completed = False
-        
         global session_type
+        old_status = session_type
         if user_input_session == 'regular':
             session_type = user_input_session
             completed = True
@@ -331,5 +343,6 @@ def run_discord_bot():
             embed.set_author(name="CAVE-iLab-Machine-Bot says:")
             embed.set_footer(text="/changesession")
         await interaction.response.send_message(file=file, embed=embed, ephemeral=False)
+        logging.info(f'{username} changed status from {old_status} to {session_type}')
 
     bot.run(TOKEN)
