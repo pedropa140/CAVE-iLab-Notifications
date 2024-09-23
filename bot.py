@@ -68,14 +68,11 @@ def run_discord_bot():
             synced = await bot.tree.sync()
             print(f'Synced {synced} command(s)')
             print(f'Synced {len(synced)} command(s)')
-            await perform_room_checks()
             await checkmachine(bot)
 
-            # Start the scheduler after checkmachine has been called
             setup_scheduler()            
             print(f'{bot.user} is now running!')
 
-            # Run the scheduler in the background
             async def run_scheduler():
                 while True:
                     schedule.run_pending()
@@ -133,7 +130,7 @@ def run_discord_bot():
                     room_checks_done = False
         elif session_type == 'summer':
             if current_day in ['Monday', 'Tuesday', 'Wednesday', 'Thursday']:
-                if (current_time in ['13:00', '18:00'] and not room_checks_done):
+                if (current_time in ['13:00', '18:00', '13:36'] and not room_checks_done):
                     for room in room_dictionary:
                         for machine in room_dictionary[room]:
                             with open(f'ilab_machines/{machine}.json', 'r') as file:
@@ -175,8 +172,8 @@ def run_discord_bot():
                 embed.set_footer(text="/roomchecks")
                 for guild in bot.guilds:
                     for channel in guild.channels:
-                        if (channel.name.lower() == 'room-check' or channel.name.lower() == 'cave-roomchecks-bot') and str(channel.type).lower() == 'text':
-                        # if (channel.name.lower() == 'cave-roomchecks-bot') and str(channel.type).lower() == 'text':
+                        # if (channel.name.lower() == 'room-check' or channel.name.lower() == 'cave-roomchecks-bot') and str(channel.type).lower() == 'text':
+                        if (channel.name.lower() == 'cave-roomchecks-bot') and str(channel.type).lower() == 'text':
                             send_message = bot.get_guild(guild.id).get_channel(channel.id)
                             with open('images/icon.png', 'rb') as f:
                                 file = discord.File(f, filename='icon.png')
@@ -193,8 +190,8 @@ def run_discord_bot():
             embed.set_footer(text="/roomchecks")
             for guild in bot.guilds:
                 for channel in guild.channels:
-                    if (channel.name.lower() == 'room-check' or channel.name.lower() == 'cave-roomchecks-bot') and str(channel.type).lower() == 'text':
-                    # if (channel.name.lower() == 'cave-roomchecks-bot') and str(channel.type).lower() == 'text':
+                    # if (channel.name.lower() == 'room-check' or channel.name.lower() == 'cave-roomchecks-bot') and str(channel.type).lower() == 'text':
+                    if (channel.name.lower() == 'cave-roomchecks-bot') and str(channel.type).lower() == 'text':
                         send_message = bot.get_guild(guild.id).get_channel(channel.id)
                         with open('images/icon.png', 'rb') as f:
                             file = discord.File(f, filename='icon.png')
@@ -267,8 +264,8 @@ def run_discord_bot():
                         embed.set_footer(text="/checkmachine")
                         for guild in bot.guilds:
                             for channel in guild.channels:
-                                if (channel.name.lower() == 'room-check' or channel.name.lower() == 'cave-roomchecks-bot') and str(channel.type).lower() == 'text':
-                                # if (channel.name.lower() == 'cave-roomchecks-bot') and str(channel.type).lower() == 'text':
+                                # if (channel.name.lower() == 'room-check' or channel.name.lower() == 'cave-roomchecks-bot') and str(channel.type).lower() == 'text':
+                                if (channel.name.lower() == 'cave-roomchecks-bot') and str(channel.type).lower() == 'text':
                                     send_message = bot.get_guild(guild.id).get_channel(channel.id)
                                     with open('images/icon.png', 'rb') as f:
                                         file = discord.File(f, filename='icon.png')
@@ -285,7 +282,9 @@ def run_discord_bot():
         schedule.every().day.at('13:00').do(lambda: asyncio.create_task(perform_room_checks()))
         schedule.every().day.at('23:00').do(lambda: asyncio.create_task(perform_room_checks()))
         schedule.every().day.at('18:00').do(lambda: asyncio.create_task(perform_room_checks()))
-        schedule.every().day.at('15:00').do(lambda: asyncio.create_task(perform_room_checks()))    
+        schedule.every().day.at('15:00').do(lambda: asyncio.create_task(perform_room_checks()))
+        
+        schedule.every().day.at('13:36').do(lambda: asyncio.create_task(perform_room_checks()))    
 
     @bot.tree.command(name = "status", description = "Get a Status of an iLab Machine.")
     @app_commands.describe(machine = "Enter iLab Machine Name (e.g. If you want to check batch.cs.rutgers.edu ... Enter batch)")
