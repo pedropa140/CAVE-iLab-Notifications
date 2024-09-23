@@ -287,49 +287,55 @@ def run_discord_bot():
     @bot.tree.command(name = "status", description = "Get a Status of an iLab Machine.")
     @app_commands.describe(machine = "Enter iLab Machine Name (e.g. If you want to check batch.cs.rutgers.edu ... Enter batch)")
     async def status(interaction : discord.Interaction, machine : str):
-        username = str(interaction.user)
-        mention = str(interaction.user.mention)
-        user_message = str(interaction.command.name)
-        channel = str(interaction.channel)
-        print(f'{username} ({mention}) said: "{user_message}" ({channel})')
+        try:
+            username = str(interaction.user)
+            mention = str(interaction.user.mention)
+            user_message = str(interaction.command.name)
+            channel = str(interaction.channel)
+            print(f'{username} ({mention}) said: "{user_message}" ({channel})')
 
-        await response.status(interaction, machine, room_dictionary)
+            await response.status(interaction, machine, room_dictionary)
+        except Exception as e:
+            print(e)
 
     @bot.tree.command(name = "changesession", description = "Change session on how the bot pings everyone.")
     @app_commands.describe(user_input_session = "Enter [regular] or [summer] or [break]")
     async def changesession(interaction : discord.Interaction, user_input_session : str):
-        username = str(interaction.user)
-        mention = str(interaction.user.mention)
-        user_message = str(interaction.command.name)
-        channel = str(interaction.channel)
-        print(f'{username} ({mention}) said: "{user_message}" ({channel})')
-        completed = False
-        
-        global session_type
-        if user_input_session == 'regular':
-            session_type = user_input_session
-            completed = True
-        elif user_input_session == 'summer':
-            session_type = user_input_session
-            completed = True
-        elif user_input_session == 'break':
-            session_type = user_input_session
-            completed = True
+        try:
+            username = str(interaction.user)
+            mention = str(interaction.user.mention)
+            user_message = str(interaction.command.name)
+            channel = str(interaction.channel)
+            print(f'{username} ({mention}) said: "{user_message}" ({channel})')
+            completed = False
+            
+            global session_type
+            if user_input_session == 'regular':
+                session_type = user_input_session
+                completed = True
+            elif user_input_session == 'summer':
+                session_type = user_input_session
+                completed = True
+            elif user_input_session == 'break':
+                session_type = user_input_session
+                completed = True
 
-        if completed:
-            result_title = f'**Session Changed** to ***{user_input_session}***'
-            embed = discord.Embed(title=result_title, color=8311585)
-            file = discord.File('images/icon.png', filename='icon.png')
-            embed.set_thumbnail(url='attachment://icon.png')
-            embed.set_author(name="CAVE-iLab-Machine-Bot says:")
-            embed.set_footer(text="/changesession")
-        else:
-            result_title = f'**Invalid Input**'
-            embed = discord.Embed(title=result_title, color=13632027)
-            file = discord.File('images/icon.png', filename='icon.png')
-            embed.set_thumbnail(url='attachment://icon.png')
-            embed.set_author(name="CAVE-iLab-Machine-Bot says:")
-            embed.set_footer(text="/changesession")
-        await interaction.response.send_message(file=file, embed=embed, ephemeral=False)
+            if completed:
+                result_title = f'**Session Changed** to ***{user_input_session}***'
+                embed = discord.Embed(title=result_title, color=8311585)
+                file = discord.File('images/icon.png', filename='icon.png')
+                embed.set_thumbnail(url='attachment://icon.png')
+                embed.set_author(name="CAVE-iLab-Machine-Bot says:")
+                embed.set_footer(text="/changesession")
+            else:
+                result_title = f'**Invalid Input**'
+                embed = discord.Embed(title=result_title, color=13632027)
+                file = discord.File('images/icon.png', filename='icon.png')
+                embed.set_thumbnail(url='attachment://icon.png')
+                embed.set_author(name="CAVE-iLab-Machine-Bot says:")
+                embed.set_footer(text="/changesession")
+            await interaction.response.send_message(file=file, embed=embed, ephemeral=False)
+        except Exception as e:
+            print(e)
 
     bot.run(TOKEN)
