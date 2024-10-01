@@ -60,6 +60,7 @@ def run_discord_bot():
     ]}
 
     file_path = 'history_dictionary.json'
+    global history_dictionary
 
     if not os.path.exists(file_path):
         history_dictionary = {}
