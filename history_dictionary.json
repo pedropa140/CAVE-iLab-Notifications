@@ -1,1 +1,95 @@
-{}
+{
+    "cd.cs.rutgers.edu": {
+        "status": "UP"
+    },
+    "cp.cs.rutgers.edu": {
+        "status": "UP"
+    },
+    "grep.cs.rutgers.edu": {
+        "status": "UP"
+    },
+    "kill.cs.rutgers.edu": {
+        "status": "UP"
+    },
+    "less.cs.rutgers.edu": {
+        "status": "UP"
+    },
+    "ls.cs.rutgers.edu": {
+        "status": "UP"
+    },
+    "man.cs.rutgers.edu": {
+        "status": "UP"
+    },
+    "pwd.cs.rutgers.edu": {
+        "status": "UP"
+    },
+    "rm.cs.rutgers.edu": {
+        "status": "UP"
+    },
+    "top.cs.rutgers.edu": {
+        "status": "UP"
+    },
+    "vi.cs.rutgers.edu": {
+        "status": "UP"
+    },
+    "assembly.cs.rutgers.edu": {
+        "status": "UP"
+    },
+    "basic.cs.rutgers.edu": {
+        "status": "UP"
+    },
+    "batch.cs.rutgers.edu": {
+        "status": "UP"
+    },
+    "cpp.cs.rutgers.edu": {
+        "status": "UP"
+    },
+    "java.cs.rutgers.edu": {
+        "status": "UP"
+    },
+    "lisp.cs.rutgers.edu": {
+        "status": "UP"
+    },
+    "pascal.cs.rutgers.edu": {
+        "status": "UP"
+    },
+    "perl.cs.rutgers.edu": {
+        "status": "UP"
+    },
+    "prolog.cs.rutgers.edu": {
+        "status": "UP"
+    },
+    "python.cs.rutgers.edu": {
+        "status": "UP"
+    },
+    "ice.cs.rutgers.edu": {
+        "status": "UP"
+    },
+    "snow.cs.rutgers.edu": {
+        "status": "UP"
+    },
+    "butter.cs.rutgers.edu": {
+        "status": "UP"
+    },
+    "cheese.cs.rutgers.edu": {
+        "status": "UP"
+    },
+    "candle.cs.rutgers.edu": {
+        "status": "UP"
+    },
+    "frost.cs.rutgers.edu": {
+        "status": "UP"
+    },
+    "popsicle.cs.rutgers.edu": {
+        "status": "UP"
+    },
+    "plastic.cs.rutgers.edu": {
+        "status": "UP"
+    },
+    "crayon.cs.rutgers.edu": {
+        "status": "UP"
+    },
+    "wax.cs.rutgers.edu": {
+        "status": "UP"
+    }
+}

@@ -77,7 +77,7 @@ def run_discord_bot():
         with open(file_path, 'r') as file:
             history_dictionary = json.load(file)
         print(f"File already exists: {file_path}")
-
+    
     @bot.event
     async def on_ready():
         try:
