@@ -16,6 +16,7 @@ load_dotenv()
 
 session_type = "regular"
 history_dictionary = {}
+room_checks_done = False
 
 def run_discord_bot():    
     TOKEN = os.getenv('DISCORD_TOKEN')
@@ -58,10 +59,26 @@ def run_discord_bot():
         "wax.cs.rutgers.edu"
     ]}
 
-    for room in room_dictionary:
-        for machine in room_dictionary[room]:
-            if machine not in history_dictionary:
-                history_dictionary[machine] = {'status': 'UP'}
+    file_path = 'history_dictionary.json'
+
+    if not os.path.exists(file_path):
+        history_dictionary = {}
+        for room in room_dictionary:
+            for machine in room_dictionary[room]:
+                if machine not in history_dictionary:
+                    history_dictionary[machine] = {'status': 'UP'}
+        with open(file_path, 'w') as file:
+            json.dump(history_dictionary, file, indent=4)
+
+        print(f"File created: {file_path}")
+
+    else:
+        with open(file_path, 'r') as file:
+            history_dictionary = json.load(file)
+        print(f"File already exists: {file_path}")
+
+    print(json.dumps(history_dictionary, indent=4))
+
     @bot.event
     async def on_ready():
         try:
@@ -273,6 +290,8 @@ def run_discord_bot():
                                     await send_message.send(file=file, embed=embed)
                                     break
                         history_dictionary[machine]['status'] = 'DOWN'
+                        with open(file_path, 'w') as file:
+                            json.dump(history_dictionary, file, indent=4)
                     else:
                         continue
             time.sleep(0.5)
