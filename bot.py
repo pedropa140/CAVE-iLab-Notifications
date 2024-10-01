@@ -77,8 +77,6 @@ def run_discord_bot():
             history_dictionary = json.load(file)
         print(f"File already exists: {file_path}")
 
-    print(json.dumps(history_dictionary, indent=4))
-
     @bot.event
     async def on_ready():
         try:
@@ -290,10 +288,10 @@ def run_discord_bot():
                                     await send_message.send(file=file, embed=embed)
                                     break
                         history_dictionary[machine]['status'] = 'DOWN'
-                        with open(file_path, 'w') as file:
-                            json.dump(history_dictionary, file, indent=4)
                     else:
                         continue
+            with open(file_path, 'w') as file:
+                json.dump(history_dictionary, file, indent=4)
             time.sleep(0.5)
 
     def setup_scheduler():
