@@ -14,7 +14,7 @@ from ilabmachine import IlabMachine
 
 load_dotenv()
 
-session_type = "summer"
+session_type = "regular"
 history_dictionary = {}
 
 def run_discord_bot():    
