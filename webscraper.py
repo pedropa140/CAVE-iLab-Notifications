@@ -31,9 +31,9 @@ def current_network_status(file_name: str, machine_name: str):
     RED = "\033[91m"
     RESET = "\033[0m"
     
-    with open(file_name, "r") as file:
+    with open(file_name, "r") as file:        
+        lines = file.readlines()
         try:
-            lines = file.readlines()
             last_checked = " ".join(lines[2].split()[2:])
             last_checked_output = f'{last_checked[0]} {last_checked[1]} {last_checked[2]} {last_checked[3]} {last_checked[5]} {last_checked[4]}'
             temperature_status = int(lines[51].split()[3])
@@ -57,25 +57,76 @@ def current_network_status(file_name: str, machine_name: str):
             return [last_checked, temperature_status, gpu_fan_speed, connections, load, ping, packet_loss, rta, root_disk, smartfailed, smartpredicted, ssh, vardisk, x2go]
         
         except Exception as e:
-            parts = lines[51].split()
-            temperature_status = parts[8] + " " + " ".join(parts[2:7]).replace(":", "")
-            gpu_fan_speed = lines[57].split()[8] + " " + " ".join(lines[51].split()[2:7]).replace(":", "")
-            connections = lines[63].split()[8] + " " + " ".join(lines[51].split()[2:7]).replace(":", "")
-            
-            load = lines[69].split()[8] + " " + " ".join(lines[51].split()[2:7]).replace(":", "")
-            ping = lines[75].split()[1]
-            packet_loss = "".join(lines[75].split()[6:])
-            rta = "Not Found"
-            root_disk = lines[81].split()[8] + " " + " ".join(lines[51].split()[2:7]).replace(":", "")
-            smartfailed = lines[87].split()[8] + " " + " ".join(lines[51].split()[2:7]).replace(":", "")
-            smartpredicted = lines[93].split()[8] + " " + " ".join(lines[51].split()[2:7]).replace(":", "")
-            ssh = " ".join(lines[99].split())
-            vardisk = lines[117].split()[8] + " " + " ".join(lines[51].split()[2:7]).replace(":", "")
-            x2go = lines[123].split()[8] + " " + " ".join(lines[51].split()[2:7]).replace(":", "")
-            
+            try:
+                parts = lines[51].split()
+                temperature_status = parts[8] + " " + " ".join(parts[2:7]).replace(":", "")
+            except Exception:
+                temperature_status = "ERROR"
+
+            try:
+                gpu_fan_speed = lines[57].split()[8] + " " + " ".join(lines[51].split()[2:7]).replace(":", "")
+            except Exception:
+                gpu_fan_speed = "ERROR"
+
+            try:
+                connections = lines[63].split()[8] + " " + " ".join(lines[51].split()[2:7]).replace(":", "")
+            except Exception:
+                connections = "ERROR"
+
+            try:
+                load = lines[69].split()[8] + " " + " ".join(lines[51].split()[2:7]).replace(":", "")
+            except Exception:
+                load = "ERROR"
+
+            try:
+                ping = lines[75].split()[1]
+            except Exception:
+                ping = "ERROR"
+
+            try:
+                packet_loss = "".join(lines[75].split()[6:])
+            except Exception:
+                packet_loss = "ERROR"
+
+            try:
+                rta = "Not Found"
+            except Exception:
+                rta = "ERROR"
+
+            try:
+                root_disk = lines[81].split()[8] + " " + " ".join(lines[51].split()[2:7]).replace(":", "")
+            except Exception:
+                root_disk = "ERROR"
+
+            try:
+                smartfailed = lines[87].split()[8] + " " + " ".join(lines[51].split()[2:7]).replace(":", "")
+            except Exception:
+                smartfailed = "ERROR"
+
+            try:
+                smartpredicted = lines[93].split()[8] + " " + " ".join(lines[51].split()[2:7]).replace(":", "")
+            except Exception:
+                smartpredicted = "ERROR"
+
+            try:
+                ssh = " ".join(lines[99].split())
+            except Exception:
+                ssh = "ERROR"
+
+            try:
+                vardisk = lines[117].split()[8] + " " + " ".join(lines[51].split()[2:7]).replace(":", "")
+            except Exception:
+                vardisk = "ERROR"
+
+            try:
+                x2go = lines[123].split()[8] + " " + " ".join(lines[51].split()[2:7]).replace(":", "")
+            except Exception:
+                x2go = "ERROR"
+
             print(f"{RED}Critical: {machine_name}{RESET}")
-            
+
             return [last_checked, temperature_status, gpu_fan_speed, connections, load, ping, packet_loss, rta, root_disk, smartfailed, smartpredicted, ssh, vardisk, x2go]
+
 
 def extended_information(file_name : str, machine_name : str):
     with open(file_name, 'r') as file:
@@ -155,17 +206,17 @@ if __name__ == '__main__':
         for machine in room_dictionary[room]:
             status_url = f"https://report.cs.rutgers.edu/nagios4/cgi-bin/status.cgi?style=details&host={machine}"
             page_text = fetch_page_content(status_url).strip('\n')
-            write_to_file(f"ilab_machines/{machine}.txt", page_text)
-            current_network_status_output = current_network_status(f'ilab_machines/{machine}.txt', machine)
-            os.remove(f'ilab_machines/{machine}.txt')
+            write_to_file(f"ilab_machines_test/{machine}_status.txt", page_text)
+            current_network_status_output = current_network_status(f'ilab_machines_test/{machine}_status.txt', machine)
+            # os.remove(f'ilab_machines/{machine}.txt')
 
             time.sleep(1)
 
             extend_url = f"https://report.cs.rutgers.edu/nagios4/cgi-bin/extinfo.cgi?type=1&host={machine}"
             page_text = fetch_page_content(extend_url).strip('\n')
-            write_to_file(f"ilab_machines/{machine}.txt", page_text)
-            extended_information_output = extended_information(f'ilab_machines/{machine}.txt', machine)
-            os.remove(f'ilab_machines/{machine}.txt')
+            write_to_file(f"ilab_machines_test/{machine}_extendedInfo.txt", page_text)
+            extended_information_output = extended_information(f'ilab_machines_test/{machine}_extendedInfo.txt', machine)
+            # os.remove(f'ilab_machines/{machine}.txt')
 
             key = find_key_by_value(machine + '.cs.rutgers.edu')
             ilab_machine = IlabMachine(machine + '.cs.rutgers.edu', key, extended_information_output[0], current_network_status_output[0],

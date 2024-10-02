@@ -4,3 +4,4 @@ gitpush.py
 users.db
 ilab_machines/
 *.log
+*.json

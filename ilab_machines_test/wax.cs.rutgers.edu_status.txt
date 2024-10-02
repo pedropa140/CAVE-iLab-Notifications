@@ -1,0 +1,125 @@
+Current Network Status
+Current Network Status
+Last Updated: Wed Oct 2 11:24:22 EDT 2024
+Updated every 90 seconds
+Nagios® Core™ 4.4.6 - www.nagios.org
+Logged in as ?
+View History For This Host
+View Notifications For This Host
+View Service Status Detail For All Hosts
+Host Status Totals
+Up
+Down
+Unreachable
+Pending
+1
+0
+0
+0
+All Problems
+All Types
+0
+1
+Service Status Totals
+Ok
+Warning
+Unknown
+Critical
+Pending
+13
+0
+0
+0
+0
+All Problems
+All Types
+0
+13
+Service Status Details For Host 'wax.cs.rutgers.edu'
+Limit Results: 
+50
+100
+250
+1000
+All
+Host Service Status Last Check Duration Attempt Status Information
+wax.cs.rutgers.edu
+GPUCurrentTemp
+OK
+10-02-2024 11:19:39
+43d 19h 31m  1s
+1/3
+OK - GPUCurrentTemp: 27 (Threshold: High: 97 Warning: 93) 
+GPUFanSpeed
+OK
+10-02-2024 11:20:09
+43d 19h 30m 23s
+1/3
+OK - GPUFanSpeed: 32 
+connections
+OK
+10-02-2024 11:20:09
+43d 19h 29m 42s
+1/3
+OK - Connections: 11 (Threshold: High: 8000 Warning: 5000) 
+load
+OK
+10-02-2024 11:21:21
+43d 19h 34m 10s
+1/3
+OK - Load: 0.21 (Threshold: High: 140 Warning: 84) 
+ping
+OK
+10-02-2024 11:21:31
+ 0d  0h 12m 55s
+1/3
+PING OK - Packet loss = 0%, RTA = 1.05 ms 
+rootdisk
+OK
+10-02-2024 11:22:39
+43d 19h 32m 59s
+1/3
+OK - RootDisk: 64 (Threshold: High: 99 Warning: 97) 
+smartfailed
+OK
+10-02-2024 11:23:21
+43d 19h 32m 21s
+1/3
+OK - smartfailed: 0 (Threshold: High: 1 Warning: 1) 
+smartpredicted
+OK
+10-02-2024 11:23:59
+43d 19h 31m 42s
+1/3
+OK - smartpredicted: 0 (Threshold: High: 1 Warning: 1) 
+ssh
+OK
+10-02-2024 11:21:48
+ 0d  0h 12m 34s
+1/3
+SSH OK - OpenSSH_8.9p1 Ubuntu-3ubuntu0.10 (protocol 2.0) 
+stats
+OK
+10-02-2024 11:20:09
+ 0d  0h 14m 13s
+1/3
+Logins=0 Load=0.21  11:20:10 up 43 days 
+swap_space_used
+OK
+10-02-2024 11:20:08
+43d 19h 29m 40s
+1/3
+OK - UsedSwap: 267 (Threshold: High: 25430 Warning: 20344) 
+vardisk
+OK
+10-02-2024 11:21:22
+43d 19h 34m 14s
+1/3
+OK - VarDisk: 20 (Threshold: High: 99 Warning: 97) 
+x2go
+OK
+10-02-2024 11:22:01
+43d 19h 34m 14s
+1/3
+OK - x2go: 0 (Threshold: High: 140 Warning: 112) 
+Results 1 - 13 of 13 Matching Services

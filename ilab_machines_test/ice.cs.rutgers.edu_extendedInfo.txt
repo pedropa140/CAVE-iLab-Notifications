@@ -1,0 +1,62 @@
+Extended Information
+Host Information
+Last Updated: Wed Oct 2 11:24:09 EDT 2024
+Updated every 90 seconds
+Nagios® Core™ 4.4.6 - www.nagios.org
+Logged in as ?
+View Status Detail For This Host
+View Alert History For This Host
+View Trends For This Host
+View Alert Histogram For This Host
+View Availability Report For This Host
+View Notifications For This Host
+Host
+ice.cs.rutgers.edu
+(ice.cs.rutgers.edu)
+Member ofiLab_H254
+128.6.13.144
+Extra Actions
+Host State Information
+Host Status:  UP   (for  0d  0h 13m  8s)
+Status Information:PING OK - Packet loss = 0%, RTA = 0.78 ms
+Performance Data:rta=0.779000ms;5000.000000;5000.000000;0.000000 pl=0%;100;100;0
+Current Attempt:1/5  (HARD state)
+Last Check Time:10-02-2024 11:21:01
+Check Type:ACTIVE
+Check Latency / Duration:0.000 / 0.005 seconds
+Next Scheduled Active Check:  10-02-2024 11:26:01
+Last State Change:10-02-2024 11:11:01
+Last Notification:10-02-2024 11:11:01 (notification 0)
+Is This Host Flapping?  NO   (0.00% state change)
+In Scheduled Downtime?  NO  
+Last Update:10-02-2024 11:24:06  ( 0d  0h  0m  3s ago)
+Active Checks:  ENABLED  
+Passive Checks:  ENABLED  
+Obsessing:  ENABLED  
+Notifications:  ENABLED  
+Event Handler:  ENABLED  
+Flap Detection:  ENABLED  
+Host Commands
+Locate host on map
+Disable active checks of this host
+Re-schedule the next check of this host
+Submit passive check result for this host
+Stop accepting passive checks for this host
+Stop obsessing over this host
+Disable notifications for this host
+Send custom host notification
+Schedule downtime for this host
+Schedule downtime for all services on this host
+Disable notifications for all services on this host
+Enable notifications for all services on this host
+Schedule a check of all services on this host
+Disable checks of all services on this host
+Enable checks of all services on this host
+Disable event handler for this host
+Disable flap detection for this host
+Clear flapping state for this host
+Host Comments
+Add a new comment
+Delete all comments
+Entry TimeAuthorCommentComment IDPersistentTypeExpiresActions
+This host has no comments associated with it
