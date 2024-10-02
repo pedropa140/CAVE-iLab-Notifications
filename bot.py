@@ -246,7 +246,7 @@ def run_discord_bot():
                                         current_network_status_output[11], current_network_status_output[12], current_network_status_output[13])
 
                 ilab_machine.to_json()
-                time.sleep(0.5)
+                # time.sleep(0.5)
                 if ilab_machine.host_status.lower() != 'up':
                     current = datetime.datetime.now()
                     current_day = current.strftime('%A')
@@ -293,7 +293,7 @@ def run_discord_bot():
                         continue
             with open(file_path, 'w') as file:
                 json.dump(history_dictionary, file, indent=4)
-            time.sleep(0.5)
+            # time.sleep(0.5)
 
     def setup_scheduler():
         schedule.every(5).minutes.do(lambda: asyncio.create_task(checkmachine(bot)))
