@@ -36,96 +36,112 @@ def current_network_status(file_name: str, machine_name: str):
         try:
             last_checked = " ".join(lines[2].split()[2:])
             last_checked_output = f'{last_checked[0]} {last_checked[1]} {last_checked[2]} {last_checked[3]} {last_checked[5]} {last_checked[4]}'
+        except Exception:
+            last_checked = "ERROR"
+
+        try:
             temperature_status = int(lines[51].split()[3])
-            gpu_fan_speed = int(lines[57].split()[3])
-            connections = int(lines[63].split()[3])
-            
-            load = lines[69].split()[3]
-            ping = lines[75].split()[1]
-            packet_loss = lines[75].split()[6]
-            rta = " ".join(lines[75].split()[9:])
-            root_disk = int(lines[81].split()[3])
-            smartfailed = int(lines[87].split()[3])
-            smartpredicted = int(lines[93].split()[3])
-            ssh = lines[105].split()[0]
-            ssh = int(ssh.replace("Logins=", ""))
-            vardisk = int(lines[117].split()[3])
-            x2go = int(lines[123].split()[3])
-            
-            print(f"{GREEN}Success: {machine_name}{RESET}")
-            
-            return [last_checked, temperature_status, gpu_fan_speed, connections, load, ping, packet_loss, rta, root_disk, smartfailed, smartpredicted, ssh, vardisk, x2go]
-        
-        except Exception as e:
+        except Exception:
             try:
                 parts = lines[51].split()
                 temperature_status = parts[8] + " " + " ".join(parts[2:7]).replace(":", "")
             except Exception:
                 temperature_status = "ERROR"
 
+        try:
+            gpu_fan_speed = int(lines[57].split()[3])
+        except Exception:
             try:
                 gpu_fan_speed = lines[57].split()[8] + " " + " ".join(lines[51].split()[2:7]).replace(":", "")
             except Exception:
                 gpu_fan_speed = "ERROR"
 
+        try:
+            connections = int(lines[63].split()[3])
+        except Exception:
             try:
                 connections = lines[63].split()[8] + " " + " ".join(lines[51].split()[2:7]).replace(":", "")
             except Exception:
                 connections = "ERROR"
 
+        try:
+            load = lines[69].split()[3]
+        except Exception:
             try:
                 load = lines[69].split()[8] + " " + " ".join(lines[51].split()[2:7]).replace(":", "")
             except Exception:
                 load = "ERROR"
 
-            try:
-                ping = lines[75].split()[1]
-            except Exception:
-                ping = "ERROR"
+        try:
+            ping = lines[75].split()[1]
+        except Exception:
+            ping = "ERROR"
 
+        try:
+            packet_loss = lines[75].split()[6]
+        except Exception:
             try:
                 packet_loss = "".join(lines[75].split()[6:])
             except Exception:
                 packet_loss = "ERROR"
 
-            try:
-                rta = "Not Found"
-            except Exception:
-                rta = "ERROR"
+        try:
+            rta = " ".join(lines[75].split()[9:])
+        except Exception:
+            rta = "ERROR"
 
+        try:
+            root_disk = int(lines[81].split()[3])
+        except Exception:
             try:
                 root_disk = lines[81].split()[8] + " " + " ".join(lines[51].split()[2:7]).replace(":", "")
             except Exception:
                 root_disk = "ERROR"
 
+        try:
+            smartfailed = int(lines[87].split()[3])
+        except Exception:
             try:
                 smartfailed = lines[87].split()[8] + " " + " ".join(lines[51].split()[2:7]).replace(":", "")
             except Exception:
                 smartfailed = "ERROR"
 
+        try:
+            smartpredicted = int(lines[93].split()[3])
+        except Exception:
             try:
                 smartpredicted = lines[93].split()[8] + " " + " ".join(lines[51].split()[2:7]).replace(":", "")
             except Exception:
                 smartpredicted = "ERROR"
 
+        try:
+            ssh = int(lines[105].split()[0].replace("Logins=", ""))
+        except Exception:
             try:
                 ssh = " ".join(lines[99].split())
             except Exception:
                 ssh = "ERROR"
 
+        try:
+            vardisk = int(lines[117].split()[3])
+        except Exception:
             try:
                 vardisk = lines[117].split()[8] + " " + " ".join(lines[51].split()[2:7]).replace(":", "")
             except Exception:
                 vardisk = "ERROR"
 
+        try:
+            x2go = int(lines[123].split()[3])
+        except Exception:
             try:
                 x2go = lines[123].split()[8] + " " + " ".join(lines[51].split()[2:7]).replace(":", "")
             except Exception:
                 x2go = "ERROR"
 
-            print(f"{RED}Critical: {machine_name}{RESET}")
+        print(f"{GREEN}Success: {machine_name}{RESET}" if all(v != "ERROR" for v in [last_checked, temperature_status, gpu_fan_speed, connections, load, ping, packet_loss, rta, root_disk, smartfailed, smartpredicted, ssh, vardisk, x2go]) else f"{RED}Critical: {machine_name}{RESET}")
 
-            return [last_checked, temperature_status, gpu_fan_speed, connections, load, ping, packet_loss, rta, root_disk, smartfailed, smartpredicted, ssh, vardisk, x2go]
+        return [last_checked, temperature_status, gpu_fan_speed, connections, load, ping, packet_loss, rta, root_disk, smartfailed, smartpredicted, ssh, vardisk, x2go]
+
 
 
 def extended_information(file_name : str, machine_name : str):
